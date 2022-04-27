@@ -164,7 +164,8 @@ public final class Checker implements Visitor {
     TypeDenoter elemType = (TypeDenoter) ast.AA.visit(this, null);
     IntegerLiteral il = new IntegerLiteral(new Integer(ast.AA.elemCount).toString(),
                                            ast.position);
-    ast.type = new ArrayTypeDenoter(il, elemType, ast.position);
+    IntegerLiteral il2 = null; //SOLUCION TEMPORAL
+    ast.type = new ArrayTypeDenoter(il, il2, elemType, ast.position);
     return ast.type;
   }
 

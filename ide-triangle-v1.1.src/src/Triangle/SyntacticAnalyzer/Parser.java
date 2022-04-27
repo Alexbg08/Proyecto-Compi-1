@@ -1030,7 +1030,7 @@ public class Parser {
     }
     return declarationAST;
   }
-
+  
 ///////////////////////////////////////////////////////////////////////////////
 //
 // PARAMETERS
@@ -1256,15 +1256,18 @@ public class Parser {
         typeAST = new SimpleTypeDenoter(iAST, typePos);
       }
       break;
-
+      
+     //Cambios realizados: Se agregaron el doubledot y un IntegerLiteral mas
     case Token.ARRAY:
       {
         acceptIt();
         IntegerLiteral ilAST = parseIntegerLiteral();
+        accept(Token.DOUBLEDOT);
+        IntegerLiteral il2AST = parseIntegerLiteral();
         accept(Token.OF);
         TypeDenoter tAST = parseTypeDenoter();
         finish(typePos);
-        typeAST = new ArrayTypeDenoter(ilAST, tAST, typePos);
+        typeAST = new ArrayTypeDenoter(ilAST, il2AST, tAST, typePos);
       }
       break;
 
