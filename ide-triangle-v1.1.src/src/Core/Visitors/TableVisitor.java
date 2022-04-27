@@ -424,7 +424,7 @@ public class TableVisitor implements Visitor {
               -1);
       } catch (NullPointerException e) { }
       
-      ast.T.visit(this, null);
+      ast.E.visit(this, null);
       return(null);
   }
   

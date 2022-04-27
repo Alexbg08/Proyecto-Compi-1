@@ -431,7 +431,7 @@ public final class Encoder implements Visitor {
     Frame frame = (Frame) o;
     int extraSize;
 
-    extraSize = ((Integer) ast.T.visit(this, null)).intValue();
+    extraSize = ((Integer) ast.E.visit(this, null)).intValue();
     emit(Machine.PUSHop, 0, 0, extraSize);
     ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
     writeTableDetails(ast);

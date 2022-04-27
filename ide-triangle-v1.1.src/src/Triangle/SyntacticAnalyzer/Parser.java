@@ -318,8 +318,8 @@ public class Parser {
     
     case Token.LET:
       {
-        acceptIt();
-        Declaration dAST = parseDeclaration();
+        acceptIt(); 
+        Declaration dAST = parseDeclaration(); 
         accept(Token.IN);
         Command cAST = parseCommand();
         accept(Token.END);
@@ -333,20 +333,10 @@ public class Parser {
         acceptIt();
         Expression eAST = parseExpression();
         accept(Token.THEN);
-        Command c1AST = parseCommand();
-        
-          while (currentToken.kind == Token.ELSIF) {              
-              acceptIt();
-              Expression e2AST = parseExpression();
-              accept(Token.THEN);
-              Command c2AST = parseCommand();
-          }
-        
-        accept(Token.ELSE);
-        Command c2AST = parseCommand();
-        accept(Token.END);
+        Command c1AST = parseCommand(); 
+        Command restIfAST = parseRestOfIf();
         finish(commandPos);
-        commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
+        commandAST = new IfCommand(eAST, c1AST, restIfAST, commandPos);
       }
       break;
     
@@ -376,6 +366,7 @@ public class Parser {
                         c2AST = null;
                         break;
                 }
+                
                 accept(Token.END);
                 finish(commandPos);
                 
@@ -397,11 +388,11 @@ public class Parser {
                 
                 switch(currentToken.kind){
                     case Token.LEAVE:
-                        //Si el while tiene ("leave" command) en el do
+                        //Si el until tiene ("leave" command) en el do
                         c2AST = parseCommand();
                         break;
                     default:
-                        //Si el while no tiene ("leave" command) en el do
+                        //Si el until no tiene ("leave" command) en el do
                         c2AST = null;
                         break;
                 }
@@ -466,13 +457,13 @@ public class Parser {
                         {
                             case Token.LEAVE:
                             {
-                                //Si el while tiene ("leave" command)
+                                //Si el until tiene ("leave" command)
                                 c2AST = parseCommand();
                                 break;
                             }
                             default:
                             {
-                                //Si el while no tiene ("leave" command)
+                                //Si el until no tiene ("leave" command)
                                 c2AST = null;
                                 break;
                             }
@@ -621,6 +612,8 @@ public class Parser {
     }
     break;
 
+    
+
 //COIDGO ELIMINADO SOLICITADO POR EL PROFESOR    
       
 //    case Token.BEGIN:
@@ -682,6 +675,50 @@ public class Parser {
     }
 
     return commandAST;
+  }
+  
+/*
+  Nueva función agregada: parseRestOfIf()
+  Esta función se encarga de procesar todos los elsif.
+*/
+  Command parseRestOfIf() throws SyntaxError {
+
+    Command commandAST = null; // in case there's a syntactic error
+
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+
+    switch (currentToken.kind) {
+
+      case Token.ELSIF: {
+        acceptIt();
+        Expression eAST = parseExpression();
+        accept(Token.THEN);
+        Command cAST = parseCommand();
+        Command elsAST = parseRestOfIf();
+        finish(commandPos);
+        commandAST = new CondRestOfIf(eAST, cAST, elsAST, commandPos);
+      }
+      break;
+
+      case Token.ELSE:
+      {
+        acceptIt();
+        Command cAST = parseCommand();
+        accept(Token.END);
+        finish(commandPos);
+        commandAST = new EndRestOfIF(cAST, commandPos);
+      }
+      break;
+
+      default:
+        syntacticError("\"%\" elsif or else expected here", currentToken.spelling);
+        break;
+
+    }
+
+    return commandAST;
+
   }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -954,8 +991,8 @@ public class Parser {
       {
         acceptIt();
         Identifier iAST = parseIdentifier();
-        accept(Token.COLON);
-        TypeDenoter tAST = parseTypeDenoter();
+        accept(Token.BECOMES);
+        Expression tAST = parseExpression();
         finish(declarationPos);
         declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
       }
@@ -1012,7 +1049,7 @@ public class Parser {
     }
     return declarationAST;
   }
-
+  
 ///////////////////////////////////////////////////////////////////////////////
 //
 // PARAMETERS
@@ -1238,15 +1275,18 @@ public class Parser {
         typeAST = new SimpleTypeDenoter(iAST, typePos);
       }
       break;
-
+      
+     //Cambios realizados: Se agregaron el doubledot y un IntegerLiteral mas
     case Token.ARRAY:
       {
         acceptIt();
         IntegerLiteral ilAST = parseIntegerLiteral();
+        accept(Token.DOUBLEDOT);
+        IntegerLiteral il2AST = parseIntegerLiteral();
         accept(Token.OF);
         TypeDenoter tAST = parseTypeDenoter();
         finish(typePos);
-        typeAST = new ArrayTypeDenoter(ilAST, tAST, typePos);
+        typeAST = new ArrayTypeDenoter(ilAST, il2AST, tAST, typePos);
       }
       break;
 

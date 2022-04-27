@@ -268,7 +268,7 @@ public class TreeVisitor implements Visitor {
     }
     
     public Object visitVarDeclaration(VarDeclaration ast, Object obj) {
-        return(createBinary("Variable Declaration", ast.I, ast.T));
+        return(createBinary("Variable Declaration", ast.I, ast.E));
     }
     // </editor-fold>
     
