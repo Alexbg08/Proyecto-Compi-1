@@ -318,20 +318,11 @@ public class Parser {
         acceptIt();
         Expression eAST = parseExpression();
         accept(Token.THEN);
-        Command c1AST = parseCommand();
-        
-          while (currentToken.kind == Token.ELSIF) {              
-              acceptIt();
-              Expression e2AST = parseExpression();
-              accept(Token.THEN);
-              Command c2AST = parseCommand();
-          }
-        
-        accept(Token.ELSE);
-        Command c2AST = parseCommand();
+        Command c1AST = parseCommand(); 
+        Command restIfAST = parseRestOfIf();
         accept(Token.END);
         finish(commandPos);
-        commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
+        commandAST = new IfCommand(eAST, c1AST, restIfAST, commandPos);
       }
       break;
     
@@ -351,16 +342,8 @@ public class Parser {
                 accept(Token.DO);
                 cAST = parseCommand();
                 
-                switch(currentToken.kind){
-                    case Token.LEAVE:
-                        //Si el while tiene ("leave" command) en el do
-                        c2AST = parseCommand();
-                        break;
-                    default:
-                        //Si el while no tiene ("leave" command) en el do
-                        c2AST = null;
-                        break;
-                }
+                
+                
                 accept(Token.END);
                 finish(commandPos);
                 
@@ -602,6 +585,8 @@ public class Parser {
     }
     break;
 
+    
+
 //COIDGO ELIMINADO SOLICITADO POR EL PROFESOR    
       
 //    case Token.BEGIN:
@@ -663,6 +648,50 @@ public class Parser {
     }
 
     return commandAST;
+  }
+  
+/*
+  Nueva función agregada: parseRestOfIf()
+  Esta función se encarga de procesar todos los elsif.
+*/
+  Command parseRestOfIf() throws SyntaxError {
+
+    Command commandAST = null; // in case there's a syntactic error
+
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+
+    switch (currentToken.kind) {
+
+      case Token.ELSIF: {
+        acceptIt();
+        Expression eAST = parseExpression();
+        accept(Token.THEN);
+        Command cAST = parseCommand();
+        Command elsAST = parseRestOfIf();
+        finish(commandPos);
+        commandAST = new CondRestOfIf(eAST, cAST, elsAST, commandPos);
+      }
+      break;
+
+      case Token.ELSE:
+      {
+        acceptIt();
+        Command cAST = parseCommand();
+        accept(Token.END);
+        finish(commandPos);
+        commandAST = new EndRestOfIF(cAST, commandPos);
+      }
+      break;
+
+      default:
+        syntacticError("\"%\" pipe or else expected here", currentToken.spelling);
+        break;
+
+    }
+
+    return commandAST;
+
   }
 
 ///////////////////////////////////////////////////////////////////////////////
