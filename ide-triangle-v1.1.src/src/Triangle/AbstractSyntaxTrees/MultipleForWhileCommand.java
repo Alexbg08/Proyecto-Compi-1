@@ -21,9 +21,7 @@ public class MultipleForWhileCommand extends Command{
     }
      @Override
   public Object visit(Visitor v, Object o) {
-   // return v.visitForDoCommand(this, o);
-   return null;
-    
+   return v.visitMultipleForWhileCommand(this, o);
   }
     
   public Declaration D;

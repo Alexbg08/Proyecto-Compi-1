@@ -580,11 +580,11 @@ public class Parser {
                 
                 switch(currentToken.kind){
                     case Token.LEAVE:
-                        //Si el while tiene ("leave" command) en el do
+                        //Si el until tiene ("leave" command) en el do
                         c2AST = parseCommand();
                         break;
                     default:
-                        //Si el while no tiene ("leave" command) en el do
+                        //Si el until no tiene ("leave" command) en el do
                         c2AST = null;
                         break;
                 }
@@ -679,7 +679,7 @@ public class Parser {
   
 /*
   Nueva función agregada: parseRestOfIf()
-  Esta función se encarga de procesar todos los elsif.
+  Esta función se encarga de procesar todos los elsif de manera recursiva.
 */
   Command parseRestOfIf() throws SyntaxError {
 
@@ -720,6 +720,109 @@ public class Parser {
     return commandAST;
 
   }
+    
+/*
+  Nueva función agregada: parseCases()
+  
+*/
+  Command parseCases() throws SyntaxError {
+      
+    Command commandAST = null; // in case there's a syntactic error
+
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+    
+      do {
+          
+        Command cAST = parseCase();
+        finish(commandPos);
+        commandAST = new casesCommand(cAST, commandPos);
+
+      } while (currentToken.kind == Token.WHEN);
+      
+    return commandAST;
+  }
+  
+/*
+Nueva función agregada: parseCases()
+  
+*/
+  Command parseCase() throws SyntaxError {
+    Command commandAST = null; // in case there's a syntactic error
+
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+    
+    if (currentToken.kind == Token.WHEN){
+        
+        acceptIt();
+        Command cAST = parseCaseLiteral();
+        Command c2AST;
+        
+        switch(currentToken.kind){
+          case Token.DOUBLEDOT:
+             //Si el when tiene (".." Case-Literal)
+             c2AST = parseCaseLiteral();
+             break;
+          default:
+              //Si el when no tiene (".." Case-Literal)
+              c2AST = null;
+              break;
+        }
+        
+        accept(Token.THEN);
+        Command c3AST = parseCaseLiteral();
+        finish(commandPos);
+
+        if(c2AST == null){
+            commandAST = new caseCommand(cAST, c2AST, commandPos);               
+        }else{
+            commandAST = new multipleCaseCommand(cAST, c2AST, c3AST, commandPos); 
+        }
+        
+        
+    } else {   
+     syntacticError("\"%\" when expected here", currentToken.spelling);
+    }
+    
+    return commandAST;
+  }
+  
+/*
+Nueva función agregada: parseCaseLiteral()
+  
+*/
+  Command parseCaseLiteral() throws SyntaxError {
+    Command commandAST = null; // in case there's a syntactic error
+
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+    
+    switch(currentToken.kind){
+        case Token.INTLITERAL:
+        {
+            IntegerLiteral intAST = parseIntegerLiteral();
+            finish(commandPos);
+            commandAST = new caseIntLiteralCommand(intAST, commandPos); 
+        }
+        break;
+        case Token.CHARLITERAL:
+        {
+            CharacterLiteral chAST = parseCharacterLiteral();
+            finish(commandPos);
+            commandAST = new caseCharLiteralCommand(chAST, commandPos); 
+        }
+        break;
+        
+        default:
+        syntacticError("\"%\" <int> or <char> "
+                + "expected here", currentToken.spelling);
+        break;
+    }      
+    return commandAST;
+  }
+  
+  
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -957,10 +1060,10 @@ public class Parser {
 
     SourcePosition declarationPos = new SourcePosition();
     start(declarationPos);
-    declarationAST = parseSingleDeclaration();
+    declarationAST = parseCompoundDeclaration();
     while (currentToken.kind == Token.SEMICOLON) {
       acceptIt();
-      Declaration d2AST = parseSingleDeclaration();
+      Declaration d2AST = parseCompoundDeclaration();
       finish(declarationPos);
       declarationAST = new SequentialDeclaration(declarationAST, d2AST,
         declarationPos);
@@ -1050,6 +1153,123 @@ public class Parser {
     return declarationAST;
   }
   
+  /*
+  Función agregada: parseCompoundDeclaration
+  Se encarga de manejar las declaraciones compuestas
+  */
+  Declaration parseCompoundDeclaration() throws SyntaxError {
+    
+    Declaration compoundDeclarationAST = null; // in case there's a syntactic error
+
+    SourcePosition declarationPos = new SourcePosition();
+    start(declarationPos);
+    
+    switch(currentToken.kind){
+        case Token.RECURSIVE:
+        {
+           acceptIt();
+           Declaration pfST = parseProcFuncs();
+           accept(Token.END);
+           finish(declarationPos);
+           compoundDeclarationAST = new RecursiveDeclaration(pfAST, declarationPos);
+        }
+        break;
+        
+        case Token.PRIVATE:
+        {
+           acceptIt();
+           Declaration dAST = parseDeclaration();
+           accept(Token.IN);
+           Declaration d2AST = parseDeclaration();
+           accept(Token.END);
+           finish(declarationPos);
+           compoundDeclarationAST = new PrivateDeclaration(dAST, d2AST, declarationPos);
+        }
+        break;
+        
+        default: 
+           compoundDeclarationAST = parseSingleDeclaration();
+           break;
+    }
+    
+    return compoundDeclarationAST;
+  }
+  
+  /*
+  Función agregada: parseProcFuncs
+  */
+  Declaration parseProcFuncs() throws SyntaxError{
+        
+    Declaration procFuncsDeclarationAST = null; // in case there's a syntactic error
+
+    SourcePosition declarationPos = new SourcePosition();
+    start(declarationPos);
+    
+    Declaration pfAST = parseProcFunc();
+
+      do {
+        if (currentToken.kind == Token.AND) {
+            acceptIt();
+            Declaration pf2AST = parseProcFunc();
+            finish(declarationPos);
+            procFuncsDeclarationAST = new ProcFuncs(pfAST, pf2AST, declarationPos);
+            
+        }
+      } while (currentToken.kind == Token.AND);
+    
+    return procFuncsDeclarationAST;
+  }
+  
+  /*
+  Función agregada: parseProcFuncs
+  */
+  Declaration parseProcFunc() throws SyntaxError{
+      
+    Declaration procFuncDeclarationAST = null; // in case there's a syntactic error
+
+    SourcePosition declarationPos = new SourcePosition();
+    start(declarationPos);
+    
+    switch(currentToken.kind){
+        case Token.PROC:
+        {
+            acceptIt();
+            Identifier iAST = parseIdentifier();
+            accept(Token.LPAREN);
+            FormalParameterSequence fpsAST = parseFormalParameterSequence();
+            accept(Token.RPAREN);
+            accept(Token.IS);
+            Command cAST = parseCommand();
+            accept(Token.END);
+            finish(declarationPos);
+            procFuncDeclarationAST = new procDeclaration(iAST, fpsAST, cAST, 
+                    declarationPos);
+            
+        }
+        break;
+        
+        case Token.FUNC:
+        {
+            acceptIt();
+            Identifier iAST = parseIdentifier();
+            accept(Token.LPAREN);
+            FormalParameterSequence fpsAST = parseFormalParameterSequence();
+            accept(Token.RPAREN);
+            accept(Token.COLON);
+            TypeDenoter tAST = parseTypeDenoter();
+            accept(Token.IS);
+            Expression eAST = parseExpression();
+            finish(declarationPos);
+            procFuncDeclarationAST = new funcDeclaration(iAST, fpsAST, tAST, 
+                    eAST, declarationPos);
+        }
+        break;
+    }
+    
+    return procFuncDeclarationAST;
+
+
+  }
 ///////////////////////////////////////////////////////////////////////////////
 //
 // PARAMETERS

@@ -21,8 +21,7 @@ public class MultipleForUntilCommand extends Command{
     }
      @Override
   public Object visit(Visitor v, Object o) {
-   // return v.visitForDoCommand(this, o);
-   return null;
+      return v.visitMultipleForUntilCommand(this, o);
     
   }
     

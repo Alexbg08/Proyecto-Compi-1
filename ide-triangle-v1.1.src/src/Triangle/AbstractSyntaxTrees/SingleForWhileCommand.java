@@ -25,8 +25,7 @@ public class SingleForWhileCommand extends Command{
     }
      @Override
   public Object visit(Visitor v, Object o) {
-   // return v.visitForDoCommand(this, o);
-   return null;
+   return v.visitSingleForWhileCommand(this, o);
     
   }
     
