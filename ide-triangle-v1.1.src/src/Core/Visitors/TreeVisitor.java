@@ -39,9 +39,16 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.MultipleForDoCommand;
+import Triangle.AbstractSyntaxTrees.MultipleForUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleForWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleRepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
@@ -55,9 +62,16 @@ import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.SingleDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.SingleForDoCommand;
+import Triangle.AbstractSyntaxTrees.SingleForUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleForWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
+import Triangle.AbstractSyntaxTrees.SingleRepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
@@ -115,6 +129,65 @@ public class TreeVisitor implements Visitor {
     public Object visitWhileCommand(WhileCommand ast, Object obj) {
         return(createBinary("While Command", ast.E, ast.C));
     }
+    
+    // Extend
+    
+    public Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object obj) { 
+      return(createTernary("Multiple Repeat While Command", ast.E, ast.C1, ast.C2));
+  }
+  
+  public Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object obj) { 
+      return(createBinary("Single Repeat While Command", ast.E, ast.C1));
+      
+  }
+  
+    public Object visitMultipleRepeatUntilCommand(MultipleRepeatUntilCommand ast, Object obj) { 
+      return(createTernary("Multiple Repeat until Command", ast.E, ast.C1, ast.C2));
+  }
+  
+  public Object visitSingleRepeatUntilCommand(SingleRepeatUntilCommand ast, Object obj) { 
+      return(createBinary("Single Repeat Until Command", ast.E, ast.C1));
+  }
+  
+  public Object visitMultipleDoWhileCommand(MultipleDoWhileCommand  ast, Object obj) { 
+      return(createTernary("Multiple Do While Command", ast.E, ast.C1, ast.C2));
+  }
+  
+  public Object visitSingleDoWhileCommand(SingleDoWhileCommand  ast, Object obj) { 
+      return(createBinary("Single Do While Command", ast.E, ast.C1));
+  }
+  
+  public Object visitMultipleDoUntilCommand(MultipleDoUntilCommand  ast, Object obj) { 
+      return(createTernary("Multiple Do Until Command", ast.E, ast.C1, ast.C2));
+  }
+  
+  public Object visitSingleDoUntilCommand(SingleDoUntilCommand   ast, Object obj) { 
+      return(createBinary("Single Do Until Command", ast.E, ast.C1));
+  }
+  
+  public Object visitMultipleForDoCommand(MultipleForDoCommand   ast, Object obj) { 
+      return(createQuinary("Multiple For Do Command",ast.I, ast.E1,ast.E2, ast.C1,ast.C2));
+  }
+  
+  public Object visitSingleForDoCommand(SingleForDoCommand    ast, Object obj) { 
+      return(createQuaternary("Single For Do Command",ast.I, ast.E1,ast.E2, ast.C1));
+  }
+  
+  public Object visitMultipleForWhileCommand(MultipleForWhileCommand   ast, Object obj) { 
+      return(createQuinary("Multiple For While Command",ast.D, ast.E1,ast.E2, ast.C1,ast.C2));
+  }
+  
+  public Object visitSingleForWhileCommand(SingleForWhileCommand    ast, Object obj) { 
+      return(createQuaternary("Single For While Command",ast.D, ast.E1,ast.E2, ast.C1));
+  }
+  
+   public Object visitMultipleForUntilCommand(MultipleForUntilCommand  ast, Object obj) { 
+      return(createQuinary("Multiple For Until Command",ast.D, ast.E1,ast.E2, ast.C1,ast.C2));
+  }
+  
+  public Object visitSingleForUntilCommand(SingleForUntilCommand    ast, Object obj) { 
+      return(createQuaternary("Single For Until Command",ast.D, ast.E1,ast.E2, ast.C1));
+  }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Expressions ">
@@ -433,6 +506,17 @@ public class TreeVisitor implements Visitor {
         t.add((DefaultMutableTreeNode)child2.visit(this, null));
         t.add((DefaultMutableTreeNode)child3.visit(this, null));
         t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        
+        return(t);             
+    }
+    
+    public DefaultMutableTreeNode createQuinary(String caption, AST child1, AST child2, AST child3, AST child4,AST child5) {
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(caption);
+        t.add((DefaultMutableTreeNode)child1.visit(this, null));
+        t.add((DefaultMutableTreeNode)child2.visit(this, null));
+        t.add((DefaultMutableTreeNode)child3.visit(this, null));
+        t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        t.add((DefaultMutableTreeNode)child5.visit(this, null));
         
         return(t);             
     }

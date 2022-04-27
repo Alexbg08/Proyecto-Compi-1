@@ -24,6 +24,29 @@ public interface Visitor {
   public abstract Object visitLetCommand(LetCommand ast, Object o);
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
+  
+  //Extend
+  
+  public abstract Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object o);
+  public abstract Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object o);
+  
+  public abstract Object  visitSingleRepeatUntilCommand (SingleRepeatUntilCommand ast, Object o);
+  public abstract Object visitMultipleRepeatUntilCommand (MultipleRepeatUntilCommand ast, Object o);
+  
+  public abstract Object visitSingleDoWhileCommand (SingleDoWhileCommand  ast, Object o);
+  public abstract Object visitMultipleDoWhileCommand (MultipleDoWhileCommand  ast, Object o);
+  
+  public abstract Object visitSingleDoUntilCommand (SingleDoUntilCommand  ast, Object o);
+  public abstract Object visitMultipleDoUntilCommand (MultipleDoUntilCommand  ast, Object o);
+  
+  public abstract Object visitSingleForDoCommand (SingleForDoCommand  ast, Object o);
+  public abstract Object visitMultipleForDoCommand (MultipleForDoCommand  ast, Object o);
+  
+  public abstract Object visitSingleForWhileCommand  (SingleForWhileCommand   ast, Object o);
+  public abstract Object visitMultipleForWhileCommand (MultipleForWhileCommand  ast, Object o);
+  
+  public abstract Object visitSingleForUntilCommand (SingleForUntilCommand  ast, Object o);
+  public abstract Object visitMultipleForUntilCommand (MultipleForUntilCommand  ast, Object o);
 
 
   // Expressions

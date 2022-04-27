@@ -39,9 +39,16 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.MultipleForDoCommand;
+import Triangle.AbstractSyntaxTrees.MultipleForUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleForWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleRepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
@@ -55,9 +62,16 @@ import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.SingleDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.SingleForDoCommand;
+import Triangle.AbstractSyntaxTrees.SingleForUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleForWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
+import Triangle.AbstractSyntaxTrees.SingleRepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
@@ -140,6 +154,111 @@ public class TableVisitor implements Visitor {
       
       return(null);
   }
+  
+  // extend 
+  public Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C1.visit(this, null);
+      ast.C2.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C1.visit(this, null);
+      return(null);
+  }
+  
+    public Object visitMultipleRepeatUntilCommand(MultipleRepeatUntilCommand ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C1.visit(this, null);
+      ast.C2.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitSingleRepeatUntilCommand(SingleRepeatUntilCommand ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C1.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitMultipleDoWhileCommand (MultipleDoWhileCommand  ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C1.visit(this, null);
+      ast.C2.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitSingleDoWhileCommand (SingleDoWhileCommand  ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C1.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitMultipleDoUntilCommand  (MultipleDoUntilCommand  ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C1.visit(this, null);
+      ast.C2.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitSingleDoUntilCommand (SingleDoUntilCommand   ast, Object o) { 
+      ast.E.visit(this, null);
+      ast.C1.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitMultipleForDoCommand   (MultipleForDoCommand   ast, Object o) { 
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C1.visit(this, null);
+      ast.C2.visit(this, null);
+      return(null);
+  }
+  
+  public Object visitSingleForDoCommand  (SingleForDoCommand    ast, Object o) { 
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C1.visit(this, null);
+      return(null);
+  }
+   public Object visitSingleForWhileCommand (SingleForWhileCommand   ast, Object o) { 
+      ast.D.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C1.visit(this, null);
+      return(null);
+  }
+  
+   public Object visitMultipleForWhileCommand (MultipleForWhileCommand   ast, Object o) { 
+      ast.D.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C1.visit(this, null);
+      ast.C2.visit(this, null);
+      return(null);
+   }
+      
+   public Object visitSingleForUntilCommand (SingleForUntilCommand ast, Object o) { 
+      ast.D.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C1.visit(this, null);
+      return(null);
+  }
+  
+   public Object visitMultipleForUntilCommand(MultipleForUntilCommand ast, Object o) { 
+      ast.D.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C1.visit(this, null);
+      ast.C2.visit(this, null);
+      return(null);
+
+   }
+  
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc=" Expressions ">

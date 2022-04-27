@@ -37,6 +37,7 @@ import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.Expression;
 import Triangle.AbstractSyntaxTrees.FieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ForVarDeclaration;
 import Triangle.AbstractSyntaxTrees.FormalParameter;
 import Triangle.AbstractSyntaxTrees.FormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
@@ -51,9 +52,16 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.MultipleForDoCommand;
+import Triangle.AbstractSyntaxTrees.MultipleForUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleForWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleRepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
@@ -68,9 +76,16 @@ import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.SingleDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.SingleForDoCommand;
+import Triangle.AbstractSyntaxTrees.SingleForUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleForWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
+import Triangle.AbstractSyntaxTrees.SingleRepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.TypeDenoter;
@@ -365,9 +380,9 @@ public class Parser {
                 finish(commandPos);
                 
                 if(c2AST == null){
-                    commandAST = new RepeatWhile(eAST, cAST, commandPos);               
+                    commandAST = new SingleRepeatWhileCommand(eAST, cAST, commandPos);               
                 }else{
-                    commandAST = new RepeatWhile(eAST, cAST, c2AST, commandPos);
+                    commandAST = new MultipleRepeatWhileCommand(eAST, cAST, c2AST, commandPos);
                 }  
             }
             break;
@@ -394,9 +409,9 @@ public class Parser {
                 finish(commandPos);
                 
                 if(c2AST == null){
-                    commandAST = new RepeatUntil(eAST, cAST, commandPos);               
+                    commandAST = new SingleRepeatUntilCommand(eAST, cAST, commandPos);               
                 }else{
-                    commandAST = new RepeatUntil(eAST, cAST, c2AST, commandPos);
+                    commandAST = new MultipleRepeatUntilCommand(eAST, cAST, c2AST, commandPos);
                 }  
             }
             break;
@@ -434,9 +449,9 @@ public class Parser {
                         finish(commandPos);
                         
                         if(c2AST == null){
-                            commandAST = new DoWhile(eAST, cAST, commandPos);               
+                            commandAST = new SingleDoWhileCommand(eAST, cAST, commandPos);               
                         }else{
-                            commandAST = new DoWhile(eAST, cAST, c2AST, commandPos);
+                            commandAST = new MultipleDoWhileCommand(eAST, cAST, c2AST, commandPos);
                         }  
                     }
                     break;
@@ -467,9 +482,9 @@ public class Parser {
                         finish(commandPos);
                         
                         if(c2AST == null){
-                            commandAST = new DoUntil(eAST, cAST, commandPos);               
+                            commandAST = new SingleDoUntilCommand(eAST, cAST, commandPos);               
                         }else{
-                            commandAST = new DoUntil(eAST, cAST, c2AST, commandPos);
+                            commandAST = new MultipleDoUntilCommand(eAST, cAST, c2AST, commandPos);
                         }  
                     }
                     break;
@@ -529,9 +544,9 @@ public class Parser {
                 finish(commandPos);
 
                 if(c2AST == null){
-                    commandAST = new ForDo(iAST, eAST, e2AST, cAST, commandPos);               
+                    commandAST = new SingleForDoCommand(iAST, eAST, e2AST, cAST, commandPos);               
                 }else{
-                    commandAST = new ForDo(iAST, eAST, e2AST, cAST, c2AST, commandPos);
+                    commandAST = new MultipleForDoCommand(iAST, eAST, e2AST, cAST, c2AST, commandPos);
                 }
             }
             
@@ -556,9 +571,11 @@ public class Parser {
                 finish(commandPos);
                 
                 if(c2AST == null){
-                    commandAST = new ForWhile(iAST, eAST, e2AST, e3AST, cAST, commandPos);               
+                    Declaration dAST = new ForVarDeclaration(iAST,eAST, commandPos);
+                    commandAST = new SingleForWhileCommand(dAST, e2AST, e3AST, cAST, commandPos);               
                 }else{
-                    commandAST = new ForWhile(iAST, eAST, e2AST, e3AST, cAST, c2AST, commandPos);
+                    Declaration dAST = new ForVarDeclaration(iAST,eAST, commandPos);
+                    commandAST = new MultipleForWhileCommand(dAST, e2AST, e3AST, cAST, c2AST, commandPos);
                 }  
             }
             break;
@@ -584,9 +601,11 @@ public class Parser {
                 finish(commandPos);
                 
                 if(c2AST == null){
-                    commandAST = new ForUntil(iAST, eAST, e2AST, e3AST, cAST, commandPos);               
+                    Declaration dAST = new ForVarDeclaration(iAST,eAST, commandPos);
+                    commandAST = new SingleForUntilCommand(dAST, e2AST, e3AST, cAST, commandPos);               
                 }else{
-                    commandAST = new ForUntil(iAST, eAST, e2AST, e3AST, cAST, c2AST, commandPos);
+                    Declaration dAST = new ForVarDeclaration(iAST,eAST, commandPos);
+                    commandAST = new MultipleForUntilCommand(dAST, e2AST, e3AST, cAST, c2AST, commandPos);
                 }  
             }
             break;

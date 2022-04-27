@@ -51,9 +51,16 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.MultipleForDoCommand;
+import Triangle.AbstractSyntaxTrees.MultipleForUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleForWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleRepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.MultipleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
@@ -67,9 +74,16 @@ import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.SingleDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
+import Triangle.AbstractSyntaxTrees.SingleForDoCommand;
+import Triangle.AbstractSyntaxTrees.SingleForUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleForWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleRecordAggregate;
+import Triangle.AbstractSyntaxTrees.SingleRepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.SingleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.SubscriptVname;
 import Triangle.AbstractSyntaxTrees.TypeDeclaration;
 import Triangle.AbstractSyntaxTrees.UnaryExpression;
@@ -120,8 +134,66 @@ public class LayoutVisitor implements Visitor {
   public Object visitWhileCommand(WhileCommand ast, Object obj) {
     return layoutBinary("WhileCom.", ast.E, ast.C);
   }
-
-
+  
+  //extend 
+  
+   public Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object obj) { 
+      return(layoutTernary("MultRep.WhileCom.", ast.E, ast.C1, ast.C2));
+  }
+  
+  public Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object obj) { 
+      return(layoutBinary("SingRep.WhileCom.", ast.E, ast.C1));
+      
+  }
+  
+    public Object visitMultipleRepeatUntilCommand(MultipleRepeatUntilCommand ast, Object obj) { 
+      return(layoutTernary("MultRep.untilCom.", ast.E, ast.C1, ast.C2));
+  }
+  
+  public Object visitSingleRepeatUntilCommand(SingleRepeatUntilCommand ast, Object obj) { 
+      return(layoutBinary("SingRep.UntilCom.", ast.E, ast.C1));
+  }
+  
+  public Object visitMultipleDoWhileCommand(MultipleDoWhileCommand  ast, Object obj) { 
+      return(layoutTernary("Mult.DoWhileCom.", ast.E, ast.C1, ast.C2));
+  }
+  
+  public Object visitSingleDoWhileCommand(SingleDoWhileCommand  ast, Object obj) { 
+      return(layoutBinary("Sing.DoWhileCom.", ast.E, ast.C1));
+  }
+  
+  public Object visitMultipleDoUntilCommand(MultipleDoUntilCommand  ast, Object obj) { 
+      return(layoutTernary("Mult.DoUntilCom.", ast.E, ast.C1, ast.C2));
+  }
+  
+  public Object visitSingleDoUntilCommand(SingleDoUntilCommand   ast, Object obj) { 
+      return(layoutBinary("Sing.DoUntilCom.", ast.E, ast.C1));
+  }
+  
+  public Object visitMultipleForDoCommand(MultipleForDoCommand   ast, Object obj) { 
+      return(layoutQuinary("Mulp.ForDoCom.",ast.I, ast.E1,ast.E2, ast.C1,ast.C2));
+  }
+  
+  public Object visitSingleForDoCommand(SingleForDoCommand    ast, Object obj) { 
+      return(layoutQuaternary("Sing.ForDoCom.",ast.I, ast.E1,ast.E2, ast.C1));
+  }
+  
+  public Object visitMultipleForWhileCommand (MultipleForWhileCommand    ast, Object obj) { 
+      return(layoutQuinary("Mulp.ForDoCom.",ast.D, ast.E1,ast.E2, ast.C1,ast.C2));
+  }
+  
+  public Object visitSingleForWhileCommand (SingleForWhileCommand     ast, Object obj) { 
+      return(layoutQuaternary("Sing.ForDoCom.",ast.D, ast.E1,ast.E2, ast.C1));
+  }
+  
+  public Object visitMultipleForUntilCommand (MultipleForUntilCommand     ast, Object obj) { 
+      return(layoutQuinary("Mulp.ForDoCom.",ast.D, ast.E1,ast.E2, ast.C1,ast.C2));
+  }
+  
+  public Object visitSingleForUntilCommand  (SingleForUntilCommand     ast, Object obj) { 
+      return(layoutQuaternary("Sing.ForDoCom.",ast.D, ast.E1,ast.E2, ast.C1));
+  }
+  
   // Expressions
   public Object visitArrayExpression(ArrayExpression ast, Object obj) {
     return layoutUnary("ArrayExpr.", ast.AA);
@@ -166,7 +238,8 @@ public class LayoutVisitor implements Visitor {
   public Object visitVnameExpression(VnameExpression ast, Object obj) {
     return layoutUnary("VnameExpr.", ast.V);
   }
-
+  
+  
 
   // Declarations
   public Object visitBinaryOperatorDeclaration(BinaryOperatorDeclaration ast, Object obj) {
@@ -416,6 +489,19 @@ public class LayoutVisitor implements Visitor {
     DrawingTree d3 = (DrawingTree) child3.visit(this, null);
     DrawingTree d4 = (DrawingTree) child4.visit(this, null);
     dt.setChildren(new DrawingTree[] {d1, d2, d3, d4});
+    attachParent(dt, join(dt));
+    return dt;
+  }
+  
+  private DrawingTree layoutQuinary (String name, AST child1, AST child2,
+                                        AST child3, AST child4,AST child5 ) {
+    DrawingTree dt = layoutCaption(name);
+    DrawingTree d1 = (DrawingTree) child1.visit(this, null);
+    DrawingTree d2 = (DrawingTree) child2.visit(this, null);
+    DrawingTree d3 = (DrawingTree) child3.visit(this, null);
+    DrawingTree d4 = (DrawingTree) child4.visit(this, null);
+    DrawingTree d5 = (DrawingTree) child5.visit(this, null);
+    dt.setChildren(new DrawingTree[] {d1, d2, d3, d4, d5});
     attachParent(dt, join(dt));
     return dt;
   }
