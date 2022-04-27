@@ -693,7 +693,7 @@ public class Parser {
       break;
 
       default:
-        syntacticError("\"%\" pipe or else expected here", currentToken.spelling);
+        syntacticError("\"%\" elsif or else expected here", currentToken.spelling);
         break;
 
     }
