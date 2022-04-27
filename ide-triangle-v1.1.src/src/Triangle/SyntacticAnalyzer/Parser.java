@@ -303,8 +303,8 @@ public class Parser {
     
     case Token.LET:
       {
-        acceptIt();
-        Declaration dAST = parseDeclaration();
+        acceptIt(); 
+        Declaration dAST = parseDeclaration(); 
         accept(Token.IN);
         Command cAST = parseCommand();
         accept(Token.END);
@@ -320,7 +320,6 @@ public class Parser {
         accept(Token.THEN);
         Command c1AST = parseCommand(); 
         Command restIfAST = parseRestOfIf();
-        accept(Token.END);
         finish(commandPos);
         commandAST = new IfCommand(eAST, c1AST, restIfAST, commandPos);
       }
@@ -342,7 +341,16 @@ public class Parser {
                 accept(Token.DO);
                 cAST = parseCommand();
                 
-                
+                switch(currentToken.kind){
+                    case Token.LEAVE:
+                        //Si el while tiene ("leave" command) en el do
+                        c2AST = parseCommand();
+                        break;
+                    default:
+                        //Si el while no tiene ("leave" command) en el do
+                        c2AST = null;
+                        break;
+                }
                 
                 accept(Token.END);
                 finish(commandPos);
@@ -365,11 +373,11 @@ public class Parser {
                 
                 switch(currentToken.kind){
                     case Token.LEAVE:
-                        //Si el while tiene ("leave" command) en el do
+                        //Si el until tiene ("leave" command) en el do
                         c2AST = parseCommand();
                         break;
                     default:
-                        //Si el while no tiene ("leave" command) en el do
+                        //Si el until no tiene ("leave" command) en el do
                         c2AST = null;
                         break;
                 }
@@ -434,13 +442,13 @@ public class Parser {
                         {
                             case Token.LEAVE:
                             {
-                                //Si el while tiene ("leave" command)
+                                //Si el until tiene ("leave" command)
                                 c2AST = parseCommand();
                                 break;
                             }
                             default:
                             {
-                                //Si el while no tiene ("leave" command)
+                                //Si el until no tiene ("leave" command)
                                 c2AST = null;
                                 break;
                             }
@@ -964,8 +972,8 @@ public class Parser {
       {
         acceptIt();
         Identifier iAST = parseIdentifier();
-        accept(Token.COLON);
-        TypeDenoter tAST = parseTypeDenoter();
+        accept(Token.BECOMES);
+        Expression tAST = parseExpression();
         finish(declarationPos);
         declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
       }
