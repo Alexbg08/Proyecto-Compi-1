@@ -3,7 +3,10 @@
  */
 
 package Triangle.AbstractSyntaxTrees;
-
+/**
+ *
+ * @author José Ramírez
+ */
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class MultipleRepeatWhileCommand extends Command {

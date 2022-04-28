@@ -1,5 +1,8 @@
 package Triangle.AbstractSyntaxTrees;
-
+/**
+ *
+ * @author José Ramírez
+ */
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class SingleDoWhileCommand extends Command {

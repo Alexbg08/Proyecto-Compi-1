@@ -9,7 +9,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 /**
  *
- * @author Pavilion
+ * @author José Ramírez
  */
 public class CaseCharLiteralCommand extends Command {
 
@@ -19,8 +19,8 @@ public class CaseCharLiteralCommand extends Command {
     }
      @Override
     public Object visit(Visitor v, Object o) {
-        //return v.visitMultipleForUntilCommand(this, o);
-        return null;
+        return v.visitCaseCharLiteralCommand(this, o);
+       
 
     }
     public CharacterLiteral CH;

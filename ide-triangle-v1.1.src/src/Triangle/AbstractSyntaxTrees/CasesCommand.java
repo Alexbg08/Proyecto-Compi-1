@@ -9,7 +9,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 /**
  *
- * @author Pavilion
+ * @author José Ramírez
  */
 public class CasesCommand extends Command {
 
@@ -19,8 +19,8 @@ public class CasesCommand extends Command {
     }
           @Override
     public Object visit(Visitor v, Object o) {
-        //return v.visitMultipleForUntilCommand(this, o);
-        return null;
+        return v.visitCasesCommand(this, o);
+     
 
     }
     public Command C1;     

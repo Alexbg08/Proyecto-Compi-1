@@ -7,7 +7,7 @@ package Triangle.AbstractSyntaxTrees;
 
 /**
  *
- * @author Pavilion
+ * @author José Ramírez
  */
 import Triangle.SyntacticAnalyzer.SourcePosition;
 public class ForVarDeclaration extends Declaration {

@@ -146,9 +146,10 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("WhileCom.", ast.E, ast.C);
   }
   
-  //extend 
+  //extend del lenguje triángulo 
+  // Todos lo métodos del extend del triángulo los agrego José Ramírez 
   
-   public Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object obj) { 
+  public Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object obj) { 
       return(layoutTernary("MultRep.WhileCom.", ast.E, ast.C1, ast.C2));
   }
   
@@ -157,7 +158,7 @@ public class LayoutVisitor implements Visitor {
       
   }
   
-    public Object visitMultipleRepeatUntilCommand(MultipleRepeatUntilCommand ast, Object obj) { 
+  public Object visitMultipleRepeatUntilCommand(MultipleRepeatUntilCommand ast, Object obj) { 
       return(layoutTernary("MultRep.untilCom.", ast.E, ast.C1, ast.C2));
   }
   
@@ -209,38 +210,38 @@ public class LayoutVisitor implements Visitor {
       return(layoutTernary("CondRestOfIfCom.", ast.E, ast.C1, ast.C2));
    }
    
-   public Object visitEndRestOfIFCommand(EndRestOfIFCommand ast, Object o) { 
+  public Object visitEndRestOfIFCommand(EndRestOfIFCommand ast, Object o) { 
      return(layoutUnary("EndRestOfIFCom.", ast.C1));
    }
    
-   public Object visitCasesCommand(CasesCommand ast, Object o) { 
+  public Object visitCasesCommand(CasesCommand ast, Object o) { 
        return(layoutUnary("CasesCom.", ast.C1));
    }
-   public Object visitSingleCaseCommand(SingleCaseCommand ast, Object o) { 
+  public Object visitSingleCaseCommand(SingleCaseCommand ast, Object o) { 
       return(layoutBinary("Sing.CaseCom.", ast.C1, ast.C2));
    }
-   public Object visitMultipleCaseCommand(MultipleCaseCommand ast, Object o) { 
+  public Object visitMultipleCaseCommand(MultipleCaseCommand ast, Object o) { 
        return(layoutTernary("Multp.CaseCom.", ast.C1, ast.C1, ast.C3));
    }
-   public Object visitCaseIntLiteralCommand(CaseIntLiteralCommand ast, Object o) { 
+  public Object visitCaseIntLiteralCommand(CaseIntLiteralCommand ast, Object o) { 
        return(layoutUnary("CaseIntLiteralCom.", ast.IN));
    }
-   public Object visitCaseCharLiteralCommand(CaseCharLiteralCommand ast, Object o) { 
+  public Object visitCaseCharLiteralCommand(CaseCharLiteralCommand ast, Object o) { 
       return(layoutUnary("CaseCharLiteralCom.", ast.CH));   
    }
    
-   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {   
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {   
        return(layoutUnary("RecursiveDecl.", ast.D));
   }
    
-   public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) { 
+  public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) { 
       return(layoutBinary("PrivateDecl.", ast.D1, ast.D2));   
   }
-   public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) { 
+  public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) { 
       return(layoutBinary("ProcFuncsDec.", ast.D1, ast.D2));  
    }
    
-    public Object  visitForVarDeclaration ( ForVarDeclaration ast, Object o) {   
+  public Object  visitForVarDeclaration ( ForVarDeclaration ast, Object o) {   
      return(layoutBinary("ForVarDeclaration.", ast.I, ast.E)); 
   }
    

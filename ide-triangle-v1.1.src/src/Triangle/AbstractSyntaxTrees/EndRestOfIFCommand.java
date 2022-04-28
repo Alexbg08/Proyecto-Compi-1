@@ -9,7 +9,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 /**
  *
- * @author Pavilion
+ * @author José Ramírez
  */
 public class EndRestOfIFCommand extends Command {
 

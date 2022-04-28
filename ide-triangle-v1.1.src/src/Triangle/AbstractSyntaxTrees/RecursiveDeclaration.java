@@ -18,11 +18,7 @@ public class RecursiveDeclaration extends Declaration{
   
   }
     public Object visit (Visitor v, Object o) {
-    // return v.visitFuncDeclaration(this, o);
-    return null;
+        return v.visitRecursiveDeclaration(this, o);
   }
-
   public Declaration D;
-
-
 }

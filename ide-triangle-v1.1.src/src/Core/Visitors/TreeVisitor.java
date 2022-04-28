@@ -141,7 +141,9 @@ public class TreeVisitor implements Visitor {
         return(createBinary("While Command", ast.E, ast.C));
     }
     
-    // Extend
+  // <editor-fold defaultstate="collapsed" desc=" Extend ">
+  // extend del lenguje triángulo 
+  // Todos lo métodos del extend del triángulo los agrego José Ramírez 
     
     public Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object obj) { 
       return(createTernary("Multiple Repeat While Command", ast.E, ast.C1, ast.C2));

@@ -4,7 +4,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 /**
  *
- * @author Pavilion
+ * @author José Ramírez
  */
 import Triangle.SyntacticAnalyzer.SourcePosition;
 

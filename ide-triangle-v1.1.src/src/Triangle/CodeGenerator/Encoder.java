@@ -183,7 +183,9 @@ public final class Encoder implements Visitor {
     return null;
   }
   
-  // Extend 
+  
+  // extend del lenguje triángulo 
+  // Todos lo métodos del extend del triángulo los agrego José Ramírez 
   @Override
     public Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

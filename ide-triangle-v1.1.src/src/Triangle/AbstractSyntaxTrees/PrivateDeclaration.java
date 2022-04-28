@@ -19,9 +19,8 @@ public class PrivateDeclaration extends Declaration{
        D2 = d2AST;
     }
     public Object visit (Visitor v, Object o) {
-    //return v.visitFuncDeclaration(this, o);
-    return null;
-  }
+        return v.visitPrivateDeclaration(this, o);
+    }
 
   public Declaration D1,D2;
 

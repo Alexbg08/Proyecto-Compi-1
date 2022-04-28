@@ -9,7 +9,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 /**
  *
- * @author Pavilion
+ * @author José Ramírez
  */
 public class MultipleCaseCommand extends Command {
 
@@ -22,8 +22,8 @@ public class MultipleCaseCommand extends Command {
     
     @Override
     public Object visit(Visitor v, Object o) {
-        //return v.visitMultipleForUntilCommand(this, o);
-        return null;
+        return v.visitMultipleCaseCommand(this, o);
+       
 
     }
     public Command C1,C2,C3;  

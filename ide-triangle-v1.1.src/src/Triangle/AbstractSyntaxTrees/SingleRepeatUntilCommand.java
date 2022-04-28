@@ -1,7 +1,10 @@
 package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
-
+/**
+ *
+ * @author José Ramírez
+ */
 public class SingleRepeatUntilCommand  extends Command {
     
  public SingleRepeatUntilCommand (Expression eAST, Command c1AST,

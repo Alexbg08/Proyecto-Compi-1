@@ -117,8 +117,8 @@ public class TableVisitor implements Visitor {
     public TableVisitor() {        
     }
 
-  // <editor-fold defaultstate="collapsed" desc=" Commands ">
-  // Commands
+ // <editor-fold defaultstate="collapsed" desc=" Commands ">
+ // Commands
   public Object visitAssignCommand(AssignCommand ast, Object o) { 
       ast.V.visit(this, null);
       ast.E.visit(this, null);
@@ -165,8 +165,9 @@ public class TableVisitor implements Visitor {
       
       return(null);
   }
-  
-  // extend 
+  // <editor-fold defaultstate="collapsed" desc=" Extend ">
+  // extend del lenguje triángulo 
+  // Todos lo métodos del extend del triángulo los agrego José Ramírez 
   public Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object o) { 
       ast.E.visit(this, null);
       ast.C1.visit(this, null);

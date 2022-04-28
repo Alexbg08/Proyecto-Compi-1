@@ -19,10 +19,7 @@ public class ProcFuncsDeclaration extends Declaration{
        D2 = pf2AST;
     }
     public Object visit (Visitor v, Object o) {
-    // return v.visitFuncDeclaration(this, o);
-    return null;
+        return v.visitProcFuncsDeclaration(this, o);
   }
-
   public Declaration D1,D2;
-    
 }
