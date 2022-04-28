@@ -127,7 +127,11 @@ public final class Scanner {
         return Token.CHARLITERAL;
       } else
         return Token.ERROR;
-
+    
+    /*
+    Se agregó el retorno del doubledot ".."
+    Autor: Brayan Marín Quirós 
+    */
     case '.':
       takeIt();
       if(currentChar == '.') {

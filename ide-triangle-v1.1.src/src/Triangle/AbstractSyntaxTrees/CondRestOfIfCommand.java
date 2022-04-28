@@ -22,9 +22,7 @@ public class CondRestOfIfCommand extends Command {
     }
       @Override
     public Object visit(Visitor v, Object o) {
-        //return v.visitMultipleForUntilCommand(this, o);
-        return null;
-
+        return v.visitCondRestOfIfCommand(this, o);
     }
 
     public Expression E;

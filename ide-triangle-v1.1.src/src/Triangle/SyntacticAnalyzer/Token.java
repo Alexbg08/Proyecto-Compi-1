@@ -117,6 +117,11 @@ final class Token extends Object {
     EOT			= 45,
     ERROR		= 46;
 
+  /*
+  Se agregaron los siguientes strings: and, choose, elsif, for, from, leave, 
+  nothing, private, recursive, repeat, until, when
+  Autor: Brayan Marín Quirós
+  */
   private static String[] tokenTable = new String[] {
     "<int>",
     "<char>",

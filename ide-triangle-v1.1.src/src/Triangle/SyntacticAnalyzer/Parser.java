@@ -499,11 +499,8 @@ public class Parser {
                 syntacticError("\"%\" cannot follow a repeat command",
         currentToken.spelling);
             }
-            break;
-            
+            break;   
         }
-        
-
      }
      break;
     
@@ -1099,7 +1096,10 @@ Nueva función agregada: parseCaseLiteral()
         declarationAST = new ConstDeclaration(iAST, eAST, declarationPos);
       }
       break;
-
+      /*
+      Se cambió el Token.BECOMES y el typeDenoter por un expression
+      Autor: Brayan Marín Quirós
+      */
     case Token.VAR:
       {
         acceptIt();
@@ -1165,6 +1165,7 @@ Nueva función agregada: parseCaseLiteral()
   /*
   Función agregada: parseCompoundDeclaration
   Se encarga de manejar las declaraciones compuestas
+  Autor: Brayan Marín Quirós
   */
   Declaration parseCompoundDeclaration() throws SyntaxError {
     
@@ -1206,6 +1207,7 @@ Nueva función agregada: parseCaseLiteral()
   
   /*
   Función agregada: parseProcFuncs
+  Autor: Brayan Marín Quirós
   */
   Declaration parseProcFuncs() throws SyntaxError{
         
@@ -1230,7 +1232,8 @@ Nueva función agregada: parseCaseLiteral()
   }
   
   /*
-  Función agregada: parseProcFuncs
+  Función agregada: parseProcFunc
+  Autor: Brayan Marín Quirós
   */
   Declaration parseProcFunc() throws SyntaxError{
       
@@ -1506,6 +1509,7 @@ Nueva función agregada: parseCaseLiteral()
       break;
       
      //Cambios realizados: Se agregaron el doubledot y un IntegerLiteral mas
+     //Autor: Brayan Marín Quirós
     case Token.ARRAY:
       {
         acceptIt();

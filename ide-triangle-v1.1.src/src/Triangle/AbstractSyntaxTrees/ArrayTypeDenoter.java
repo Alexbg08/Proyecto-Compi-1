@@ -12,6 +12,12 @@
  * of the authors.
  */
 
+ /*
+ Se agregó un IntegerLiteral más a los  atributos de la clase y los parámetros
+ del constructor
+ Autor: Brayan Marín Quirós
+ */
+
 package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;

@@ -19,8 +19,7 @@ public class EndRestOfIFCommand extends Command {
     }
          @Override
     public Object visit(Visitor v, Object o) {
-        //return v.visitMultipleForUntilCommand(this, o);
-        return null;
+        return v.visitEndRestOfIFCommand(this, o);
 
     }
     public Command C1;
