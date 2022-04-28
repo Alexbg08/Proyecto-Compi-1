@@ -1,4 +1,4 @@
-package Triangle.TreeWriterHTML;
+package Triangle.TreeWriterXML;
 
 import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
@@ -91,6 +91,12 @@ import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 import java.io.FileWriter;
 import java.io.IOException;
+
+/*
+Modificaciones creadas por Brayan Marín y José Ramírez
+Se agregaron todos los métodos nuevos para la visualización del AST 
+(Se encuentran al final del código)
+*/
 
 public class WriterVisitor implements Visitor {
 
@@ -601,7 +607,7 @@ public class WriterVisitor implements Visitor {
     
     /*
     Implementación nuevos métodos para el AST
-    Autor: Alex Brenes Garita
+    Autores: Brayan Marín Quirós y José Ramírez
     */
     @Override
     public Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object o) {

@@ -12,6 +12,11 @@
  * of the authors.
  */
 
+/*
+Modificaciones realizadas por Brayan Marín  y José Ramírez
+Última modificación: 28/04/2022
+*/
+
 package Triangle.SyntacticAnalyzer;
 
 import Triangle.ErrorReporter;
@@ -318,6 +323,7 @@ public class Parser {
       }
       break;
     
+     //Nueva alternativa. Brayan Marín Quirós
     case Token.NOTHING:
       {
        acceptIt();
@@ -326,6 +332,7 @@ public class Parser {
       }
     break;
     
+    //Alternativa modificada. Brayan Marín Quirós
     case Token.LET:
       {
         acceptIt(); 
@@ -337,7 +344,8 @@ public class Parser {
         commandAST = new LetCommand(dAST, cAST, commandPos);
       }
       break;
-      
+    
+    //Alternativa modificada para utilizar recursividad. Brayan Marín Quirós 
     case Token.IF:
       {
         acceptIt();
@@ -350,6 +358,7 @@ public class Parser {
       }
       break;
     
+    //Alternativa agregada. Brayan Marín Quirós 
     case Token.REPEAT:
       {
         acceptIt();
@@ -621,7 +630,9 @@ public class Parser {
 
     
 
-//COIDGO ELIMINADO SOLICITADO POR EL PROFESOR    
+/*COIDGO ELIMINADO SOLICITADO POR EL PROFESOR  
+  Realizado por Brayan Marín Quirós   
+ */  
       
 //    case Token.BEGIN:
 //      acceptIt();
@@ -687,6 +698,8 @@ public class Parser {
 /*
   Nueva función agregada: parseRestOfIf()
   Esta función se encarga de procesar todos los elsif de manera recursiva.
+  Creada por Brayan Marín Quirós utilizando la explicación del profesor con 
+  respecto al RestOfIf
 */
   Command parseRestOfIf() throws SyntaxError {
 
@@ -730,7 +743,8 @@ public class Parser {
     
 /*
   Nueva función agregada: parseCases()
-  
+  Encargada de procesar uno o más case
+  Creada por Brayan Marín Quirós
 */
   Command parseCases() throws SyntaxError {
       
@@ -752,7 +766,8 @@ public class Parser {
   
 /*
 Nueva función agregada: parseCases()
-  
+Encargada de procesar un comando cuando haya un CaseLiteral
+Creada por Brayan Marín Quirós  
 */
   Command parseCase() throws SyntaxError {
     Command commandAST = null; // in case there's a syntactic error
@@ -1097,7 +1112,8 @@ Nueva función agregada: parseCaseLiteral()
       }
       break;
       /*
-      Se cambió el Token.BECOMES y el typeDenoter por un expression
+      Se cambió el Token.BECOMES en lugar de un Token.COLON
+      y el typeDenoter por un expression
       Autor: Brayan Marín Quirós
       */
     case Token.VAR:
@@ -1110,7 +1126,11 @@ Nueva función agregada: parseCaseLiteral()
         declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
       }
       break;
-
+      
+     /*
+      Se cambió el singleCommand por un Command
+      Autor: Brayan Marín Quirós
+     */
     case Token.PROC:
       {
         acceptIt();
@@ -1207,6 +1227,7 @@ Nueva función agregada: parseCaseLiteral()
   
   /*
   Función agregada: parseProcFuncs
+  Procesa una o más proc-func
   Autor: Brayan Marín Quirós
   */
   Declaration parseProcFuncs() throws SyntaxError{
@@ -1233,6 +1254,7 @@ Nueva función agregada: parseCaseLiteral()
   
   /*
   Función agregada: parseProcFunc
+  Se utiliza para crear un proc o un func
   Autor: Brayan Marín Quirós
   */
   Declaration parseProcFunc() throws SyntaxError{
@@ -1276,6 +1298,10 @@ Nueva función agregada: parseCaseLiteral()
                     eAST, declarationPos);
         }
         break;
+        
+        default:
+            syntacticError("\"%\" proc or func expected here",
+                    currentToken.spelling);
     }
     
     return procFuncDeclarationAST;

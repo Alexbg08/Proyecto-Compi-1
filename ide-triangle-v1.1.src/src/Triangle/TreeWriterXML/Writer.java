@@ -1,9 +1,15 @@
-package Triangle.TreeWriterHTML;
+package Triangle.TreeWriterXML;
 
 import Triangle.AbstractSyntaxTrees.Program;
 
 import java.io.FileWriter;
 import java.io.IOException;
+
+
+/*
+Código suministrado por el profesor Ignacio Trejos Zelaya en la carpeta recursos
+Implementado por Brayan Marín Quirós
+*/
 
 public class Writer {
 
