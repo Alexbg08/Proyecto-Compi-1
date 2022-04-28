@@ -24,9 +24,13 @@ import Triangle.AbstractSyntaxTrees.AssignCommand;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseCharLiteralCommand;
+import Triangle.AbstractSyntaxTrees.CaseIntLiteralCommand;
+import Triangle.AbstractSyntaxTrees.CasesCommand;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.Command;
+import Triangle.AbstractSyntaxTrees.CondRestOfIfCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
@@ -35,6 +39,7 @@ import Triangle.AbstractSyntaxTrees.DotVname;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.EndRestOfIFCommand;
 import Triangle.AbstractSyntaxTrees.Expression;
 import Triangle.AbstractSyntaxTrees.FieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ForVarDeclaration;
@@ -52,6 +57,7 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleCaseCommand;
 import Triangle.AbstractSyntaxTrees.MultipleDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.MultipleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -63,19 +69,23 @@ import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleRepeatUntilCommand;
 import Triangle.AbstractSyntaxTrees.MultipleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
+import Triangle.AbstractSyntaxTrees.ProcFuncsDeclaration;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordAggregate;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.SingleCaseCommand;
 import Triangle.AbstractSyntaxTrees.SingleDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.SingleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
@@ -697,7 +707,7 @@ public class Parser {
         Command cAST = parseCommand();
         Command elsAST = parseRestOfIf();
         finish(commandPos);
-        commandAST = new CondRestOfIf(eAST, cAST, elsAST, commandPos);
+        commandAST = new CondRestOfIfCommand(eAST, cAST, elsAST, commandPos);
       }
       break;
 
@@ -707,7 +717,7 @@ public class Parser {
         Command cAST = parseCommand();
         accept(Token.END);
         finish(commandPos);
-        commandAST = new EndRestOfIF(cAST, commandPos);
+        commandAST = new EndRestOfIFCommand(cAST, commandPos);
       }
       break;
 
@@ -736,7 +746,7 @@ public class Parser {
           
         Command cAST = parseCase();
         finish(commandPos);
-        commandAST = new casesCommand(cAST, commandPos);
+        commandAST = new CasesCommand(cAST, commandPos);
 
       } while (currentToken.kind == Token.WHEN);
       
@@ -775,9 +785,9 @@ Nueva función agregada: parseCases()
         finish(commandPos);
 
         if(c2AST == null){
-            commandAST = new caseCommand(cAST, c2AST, commandPos);               
+            commandAST = new SingleCaseCommand(cAST, c2AST, commandPos);               
         }else{
-            commandAST = new multipleCaseCommand(cAST, c2AST, c3AST, commandPos); 
+            commandAST = new MultipleCaseCommand(cAST, c2AST, c3AST, commandPos); 
         }
         
         
@@ -803,14 +813,14 @@ Nueva función agregada: parseCaseLiteral()
         {
             IntegerLiteral intAST = parseIntegerLiteral();
             finish(commandPos);
-            commandAST = new caseIntLiteralCommand(intAST, commandPos); 
+            commandAST = new CaseIntLiteralCommand(intAST, commandPos); 
         }
         break;
         case Token.CHARLITERAL:
         {
             CharacterLiteral chAST = parseCharacterLiteral();
             finish(commandPos);
-            commandAST = new caseCharLiteralCommand(chAST, commandPos); 
+            commandAST = new CaseCharLiteralCommand(chAST, commandPos); 
         }
         break;
         
@@ -1128,8 +1138,7 @@ Nueva función agregada: parseCaseLiteral()
         accept(Token.IS);
         Expression eAST = parseExpression();
         finish(declarationPos);
-        declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,
-          declarationPos);
+        declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,declarationPos);
       }
       break;
 
@@ -1168,7 +1177,7 @@ Nueva función agregada: parseCaseLiteral()
         case Token.RECURSIVE:
         {
            acceptIt();
-           Declaration pfST = parseProcFuncs();
+           Declaration pfAST = parseProcFuncs();
            accept(Token.END);
            finish(declarationPos);
            compoundDeclarationAST = new RecursiveDeclaration(pfAST, declarationPos);
@@ -1212,7 +1221,7 @@ Nueva función agregada: parseCaseLiteral()
             acceptIt();
             Declaration pf2AST = parseProcFunc();
             finish(declarationPos);
-            procFuncsDeclarationAST = new ProcFuncs(pfAST, pf2AST, declarationPos);
+            procFuncsDeclarationAST = new ProcFuncsDeclaration(pfAST, pf2AST, declarationPos);
             
         }
       } while (currentToken.kind == Token.AND);
@@ -1242,7 +1251,7 @@ Nueva función agregada: parseCaseLiteral()
             Command cAST = parseCommand();
             accept(Token.END);
             finish(declarationPos);
-            procFuncDeclarationAST = new procDeclaration(iAST, fpsAST, cAST, 
+            procFuncDeclarationAST = new ProcDeclaration(iAST, fpsAST, cAST, 
                     declarationPos);
             
         }
@@ -1260,7 +1269,7 @@ Nueva función agregada: parseCaseLiteral()
             accept(Token.IS);
             Expression eAST = parseExpression();
             finish(declarationPos);
-            procFuncDeclarationAST = new funcDeclaration(iAST, fpsAST, tAST, 
+            procFuncDeclarationAST = new FuncDeclaration(iAST, fpsAST, tAST, 
                     eAST, declarationPos);
         }
         break;

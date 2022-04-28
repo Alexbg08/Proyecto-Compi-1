@@ -14,9 +14,13 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseCharLiteralCommand;
+import Triangle.AbstractSyntaxTrees.CaseIntLiteralCommand;
+import Triangle.AbstractSyntaxTrees.CasesCommand;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.CondRestOfIfCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
@@ -25,7 +29,9 @@ import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
+import Triangle.AbstractSyntaxTrees.EndRestOfIFCommand;
 import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ForVarDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
@@ -39,6 +45,7 @@ import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.MultipleCaseCommand;
 import Triangle.AbstractSyntaxTrees.MultipleDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.MultipleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
@@ -50,18 +57,22 @@ import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleRepeatUntilCommand;
 import Triangle.AbstractSyntaxTrees.MultipleRepeatWhileCommand;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
+import Triangle.AbstractSyntaxTrees.ProcFuncsDeclaration;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.SingleArrayAggregate;
+import Triangle.AbstractSyntaxTrees.SingleCaseCommand;
 import Triangle.AbstractSyntaxTrees.SingleDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.SingleDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.SingleFieldTypeDenoter;
@@ -188,6 +199,47 @@ public class TreeVisitor implements Visitor {
   public Object visitSingleForUntilCommand(SingleForUntilCommand    ast, Object obj) { 
       return(createQuaternary("Single For Until Command",ast.D, ast.E1,ast.E2, ast.C1));
   }
+  
+     
+   public Object visitCondRestOfIfCommand(CondRestOfIfCommand ast, Object o) { 
+      return(createTernary("CondRestOf If Command", ast.E, ast.C1, ast.C2));
+   }
+   
+   public Object visitEndRestOfIFCommand(EndRestOfIFCommand ast, Object o) { 
+     return(createUnary("EndRestOf IF Command", ast.C1));
+   }
+   
+   public Object visitCasesCommand(CasesCommand ast, Object o) { 
+       return(createUnary("Cases Command", ast.C1));
+   }
+   public Object visitSingleCaseCommand(SingleCaseCommand ast, Object o) { 
+      return(createBinary("Single Case Command", ast.C1, ast.C2));
+   }
+   public Object visitMultipleCaseCommand(MultipleCaseCommand ast, Object o) { 
+       return(createTernary("Multiple Case Command", ast.C1, ast.C1, ast.C3));
+   }
+   public Object visitCaseIntLiteralCommand(CaseIntLiteralCommand ast, Object o) { 
+       return(createUnary("CaseIntLiteral Command", ast.IN));
+   }
+   public Object visitCaseCharLiteralCommand(CaseCharLiteralCommand ast, Object o) { 
+      return(createUnary("CaseCharLiteral Command", ast.CH));
+   }
+   
+   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {   
+       return(createUnary("Recursive Declaration", ast.D));
+  }
+   
+   public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) { 
+      return(createBinary("Private Declaration", ast.D1, ast.D2));   
+  }
+   public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) { 
+      return(createBinary("ProcFuncs Declaration", ast.D1, ast.D2));     
+  }
+   
+    public Object  visitForVarDeclaration ( ForVarDeclaration ast, Object o) {   
+     return(createBinary("ForVarDeclaration.", ast.I, ast.E)); 
+  }
+   
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Expressions ">

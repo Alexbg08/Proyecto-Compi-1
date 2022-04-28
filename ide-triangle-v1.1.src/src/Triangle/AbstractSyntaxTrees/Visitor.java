@@ -47,8 +47,22 @@ public interface Visitor {
   
   public abstract Object visitSingleForUntilCommand (SingleForUntilCommand  ast, Object o);
   public abstract Object visitMultipleForUntilCommand (MultipleForUntilCommand  ast, Object o);
-
-
+  
+   public abstract Object visitCondRestOfIfCommand  (CondRestOfIfCommand   ast, Object o);
+   public abstract Object visitEndRestOfIFCommand  (EndRestOfIFCommand   ast, Object o);
+   
+   public abstract Object visitCasesCommand  (CasesCommand  ast, Object o);
+   public abstract Object visitSingleCaseCommand  (SingleCaseCommand  ast, Object o);
+   public abstract Object visitMultipleCaseCommand  (MultipleCaseCommand   ast, Object o);
+   public abstract Object visitCaseIntLiteralCommand   (CaseIntLiteralCommand ast, Object o);
+   public abstract Object visitCaseCharLiteralCommand  (CaseCharLiteralCommand  ast, Object o);
+   
+   public abstract Object visitRecursiveDeclaration (RecursiveDeclaration   ast, Object o);
+   public abstract Object visitPrivateDeclaration  (PrivateDeclaration ast, Object o);
+   public abstract Object visitProcFuncsDeclaration  (ProcFuncsDeclaration  ast, Object o);
+   
+   public abstract Object visitForVarDeclaration (ForVarDeclaration  ast, Object o);
+   
   // Expressions
   public abstract Object visitArrayExpression(ArrayExpression ast, Object o);
   public abstract Object visitBinaryExpression(BinaryExpression ast, Object o);

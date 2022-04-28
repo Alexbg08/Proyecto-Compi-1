@@ -9,21 +9,21 @@ package Triangle.AbstractSyntaxTrees;
  *
  * @author Pavilion
  */
-
 import Triangle.SyntacticAnalyzer.SourcePosition;
 public class ForVarDeclaration extends Declaration {
    public ForVarDeclaration(Identifier iAST, Expression tAST,
                          SourcePosition thePosition) {
     super (thePosition);
     I = iAST;
-    T = tAST;
+    E = tAST;
   }
 
   public Object visit(Visitor v, Object o) {
-    return null;
+    return v.visitForVarDeclaration(this, o);
   }
 
   public Identifier I;
-  public Expression T;
+  public Expression E;
+
 } 
 
