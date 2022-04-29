@@ -64,9 +64,8 @@ public interface Visitor {
    
    public abstract Object visitForVarDeclaration (ForVarDeclaration  ast, Object o);
    
-    public abstract Object visitVarDeclarationOptional(VarDeclarationOptional  ast, Object o);
-    public abstract Object  visitArrayTypeDenoterOptional(ArrayTypeDenoterOptional  ast, Object o);
-   
+   public abstract Object visitVarDeclarationOptional(VarDeclarationOptional  ast, Object o);
+   public abstract Object  visitArrayTypeDenoterOptional(ArrayTypeDenoterOptional  ast, Object o);
    
    
   // Expressions

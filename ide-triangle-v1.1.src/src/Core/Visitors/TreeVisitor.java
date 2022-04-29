@@ -239,15 +239,14 @@ public class TreeVisitor implements Visitor {
    public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) { 
       return(createBinary("ProcFuncs Declaration", ast.D1, ast.D2));     
   }
-   
     public Object  visitForVarDeclaration ( ForVarDeclaration ast, Object o) {   
-     return(createBinary("ForVarDeclaration.", ast.I, ast.E)); 
+     return(createBinary("ForVarDeclaration", ast.I, ast.E)); 
   }
    public Object  visitVarDeclarationOptional ( VarDeclarationOptional ast, Object o) {   
-      return(createBinary("VarDeclarationOptional.", ast.I, ast.E)); 
+      return(createBinary("VarDeclarationOptional", ast.I, ast.E)); 
   }
    public Object  visitArrayTypeDenoterOptional ( ArrayTypeDenoterOptional ast, Object o) {   
-      return(createTernary("ArrayTypeDenoterOptional.", ast.IL1, ast.IL2, ast.T)); 
+      return(createTernary("ArrayTypeDenoterOptional", ast.IL1, ast.IL2, ast.T)); 
   }
    
     // </editor-fold>

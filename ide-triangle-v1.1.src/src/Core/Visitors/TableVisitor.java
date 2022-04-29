@@ -332,7 +332,7 @@ public class TableVisitor implements Visitor {
       return(null);
   }
    
-   public Object  visitVarDeclarationOptional ( VarDeclarationOptional ast, Object o) {   
+   public Object  visitVarDeclarationOptional (VarDeclarationOptional ast, Object o) {   
       ast.I.visit(this, null);
       ast.E.visit(this, null);
       return(null);
