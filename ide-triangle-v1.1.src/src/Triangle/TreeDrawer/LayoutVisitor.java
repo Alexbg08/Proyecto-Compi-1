@@ -327,6 +327,10 @@ public class LayoutVisitor implements Visitor {
   public Object visitVarDeclaration(VarDeclaration ast, Object obj) {
     return layoutBinary("VarDecl.", ast.I, ast.T);
   }
+  
+  public Object visitVarDeclarationOptional(VarDeclarationOptional ast, Object o) {
+    return layoutBinary("VarDeclaration.Opt.", ast.I, ast.E);
+  }
 
 
   // Array Aggregates
@@ -453,13 +457,9 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("Sing.F.TypeD.", ast.I, ast.T);
   }
   
-   public Object visitVarDeclarationOptional(VarDeclarationOptional ast, Object o) {
-         return layoutBinary("VarDeclaration.Opt.", ast.I, ast.E);
-    }
-
-    public Object visitArrayTypeDenoterOptional(ArrayTypeDenoterOptional ast, Object o) {
-        return layoutTernary("ArrayTypeDenoterOpt.", ast.IL1, ast.IL2, ast.T);
-    }
+  public Object visitArrayTypeDenoterOptional(ArrayTypeDenoterOptional ast, Object o) {
+    return layoutTernary("ArrayTypeDenoter.Opt.", ast.IL1, ast.IL2, ast.T);
+  }
 
 
 

@@ -12,11 +12,6 @@
  * of the authors.
  */
 
- /*
- Se cambió el typeDenoter por un expression
- Autor: Brayan Marín Quirós
- */
-
 package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;

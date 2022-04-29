@@ -1129,17 +1129,19 @@ Nueva función agregada: parseCaseLiteral()
              TypeDenoter tAST = parseTypeDenoter();
              finish(declarationPos);
              declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
-            } break;
+            } 
+            break;
             case Token.BECOMES:
             {
              acceptIt();
              Expression eAST = parseExpression();
              finish(declarationPos);
              declarationAST = new VarDeclarationOptional(iAST, eAST, declarationPos);
-            } break;
+            } 
+            break;
             
             default:
-              syntacticError("\"%\" ';' or ':=' expected here",
+              syntacticError("\"%\" ':' or ':=' expected here",
                       currentToken.spelling);
             break;
         }
