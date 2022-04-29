@@ -380,6 +380,7 @@ public class Parser {
                 switch(currentToken.kind){
                     case Token.LEAVE:
                         //Si el while tiene ("leave" command) en el do
+                        acceptIt();
                         c2AST = parseCommand();
                         break;
                     default:
@@ -410,6 +411,7 @@ public class Parser {
                 switch(currentToken.kind){
                     case Token.LEAVE:
                         //Si el until tiene ("leave" command) en el do
+                        acceptIt();
                         c2AST = parseCommand();
                         break;
                     default:
@@ -446,6 +448,7 @@ public class Parser {
                             case Token.LEAVE:
                             {
                                 //Si el while tiene ("leave" command)
+                                acceptIt();
                                 c2AST = parseCommand();
                                 break;
                             }
@@ -479,6 +482,7 @@ public class Parser {
                             case Token.LEAVE:
                             {
                                 //Si el until tiene ("leave" command)
+                                acceptIt();
                                 c2AST = parseCommand();
                                 break;
                             }
@@ -538,6 +542,7 @@ public class Parser {
                     case Token.LEAVE:
                     {
                         //Si el do tiene ("leave" command)
+                        acceptIt();
                         c2AST = parseCommand();
                         break;
                     }
@@ -558,6 +563,7 @@ public class Parser {
                     commandAST = new MultipleForDoCommand(iAST, eAST, e2AST, cAST, c2AST, commandPos);
                 }
             }
+            break;
             
             case Token.WHILE:
             {
@@ -569,6 +575,7 @@ public class Parser {
                 switch(currentToken.kind){
                     case Token.LEAVE:
                         //Si el while tiene ("leave" command) en el do
+                        acceptIt();
                         c2AST = parseCommand();
                         break;
                     default:
@@ -599,6 +606,7 @@ public class Parser {
                 switch(currentToken.kind){
                     case Token.LEAVE:
                         //Si el until tiene ("leave" command) en el do
+                        acceptIt();
                         c2AST = parseCommand();
                         break;
                     default:
