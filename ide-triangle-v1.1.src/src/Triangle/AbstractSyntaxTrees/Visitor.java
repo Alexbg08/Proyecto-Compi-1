@@ -25,7 +25,8 @@ public interface Visitor {
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
   
-  //Extend
+  //Extend métodos para la implemementación abstracta extendida de triángulo 
+  //Autor: José Ramirez 
   
   public abstract Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object o);
   public abstract Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object o);
@@ -62,6 +63,11 @@ public interface Visitor {
    public abstract Object visitProcFuncsDeclaration  (ProcFuncsDeclaration  ast, Object o);
    
    public abstract Object visitForVarDeclaration (ForVarDeclaration  ast, Object o);
+   
+    public abstract Object visitVarDeclarationOptional(VarDeclarationOptional  ast, Object o);
+    public abstract Object  visitArrayTypeDenoterOptional(ArrayTypeDenoterOptional  ast, Object o);
+   
+   
    
   // Expressions
   public abstract Object visitArrayExpression(ArrayExpression ast, Object o);

@@ -8,6 +8,7 @@ package Core.Visitors;
 import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ArrayTypeDenoterOptional;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
@@ -89,6 +90,7 @@ import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
+import Triangle.AbstractSyntaxTrees.VarDeclarationOptional;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
@@ -329,6 +331,21 @@ public class TableVisitor implements Visitor {
       ast.E.visit(this, null);
       return(null);
   }
+   
+   public Object  visitVarDeclarationOptional ( VarDeclarationOptional ast, Object o) {   
+      ast.I.visit(this, null);
+      ast.E.visit(this, null);
+      return(null);
+  }
+    public Object  visitArrayTypeDenoterOptional ( ArrayTypeDenoterOptional ast, Object o) {   
+      ast.IL1.visit(this, null);
+      ast.IL2.visit(this, null);
+      ast.T.visit(this, null);
+      return(null);
+  }
+   
+  
+   
    
   
   

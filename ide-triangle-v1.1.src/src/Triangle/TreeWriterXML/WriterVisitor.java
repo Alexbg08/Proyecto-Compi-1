@@ -3,6 +3,7 @@ package Triangle.TreeWriterXML;
 import Triangle.AbstractSyntaxTrees.AnyTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ArrayExpression;
 import Triangle.AbstractSyntaxTrees.ArrayTypeDenoter;
+import Triangle.AbstractSyntaxTrees.ArrayTypeDenoterOptional;
 import Triangle.AbstractSyntaxTrees.AssignCommand;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
@@ -84,6 +85,7 @@ import Triangle.AbstractSyntaxTrees.UnaryExpression;
 import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
+import Triangle.AbstractSyntaxTrees.VarDeclarationOptional;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
@@ -849,5 +851,23 @@ public class WriterVisitor implements Visitor {
         writeLineHTML("</ForVarDeclaration>");
         return null;
     }
+    
+     public Object visitVarDeclarationOptional(VarDeclarationOptional ast, Object o) {
+        writeLineHTML("<VarDeclarationOptional>");
+        ast.I.visit(this, null);
+        ast.E.visit(this, null);
+        writeLineHTML("</VarDeclarationOptional>");
+        return null;
+    }
+
+    public Object visitArrayTypeDenoterOptional(ArrayTypeDenoterOptional ast, Object o) {
+        writeLineHTML("<ArrayTypeDenoterOptional>");
+        ast.IL1.visit(this, null);
+        ast.IL2.visit(this, null);
+        ast.T.visit(this, null);
+        writeLineHTML("</ArrayTypeDenoterOptional>");
+        return null;
+    }
+
 
 }
