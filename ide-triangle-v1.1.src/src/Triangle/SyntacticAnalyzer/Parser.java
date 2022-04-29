@@ -676,16 +676,17 @@ public class Parser {
 //        commandAST = new WhileCommand(eAST, cAST, commandPos);
 //      }
 //      break;
+//      case Token.EOT:
+//
+//      finish(commandPos);
+//      commandAST = new EmptyCommand(commandPos);
+//      break;
 
     case Token.SEMICOLON:
     case Token.END:
     case Token.ELSE:
     case Token.IN:
-    case Token.EOT:
 
-      finish(commandPos);
-      commandAST = new EmptyCommand(commandPos);
-      break;
 
     default:
       syntacticError("\"%\" cannot start a command",
