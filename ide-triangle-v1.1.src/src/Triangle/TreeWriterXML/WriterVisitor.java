@@ -312,7 +312,7 @@ public class WriterVisitor implements Visitor {
     public Object visitVarDeclaration(VarDeclaration ast, Object obj) {
         writeLineHTML("<VarDeclaration>");
         ast.I.visit(this, null);
-        ast.E.visit(this, null);
+        ast.T.visit(this, null);
         writeLineHTML("</VarDeclaration>");
         return null;
     }

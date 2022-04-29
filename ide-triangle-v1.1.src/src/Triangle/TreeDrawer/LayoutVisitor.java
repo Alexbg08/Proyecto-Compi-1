@@ -323,7 +323,7 @@ public class LayoutVisitor implements Visitor {
   }
 
   public Object visitVarDeclaration(VarDeclaration ast, Object obj) {
-    return layoutBinary("VarDecl.", ast.I, ast.E);
+    return layoutBinary("VarDecl.", ast.I, ast.T);
   }
 
 

@@ -1112,18 +1112,35 @@ Nueva función agregada: parseCaseLiteral()
       }
       break;
       /*
-      Se cambió el Token.BECOMES en lugar de un Token.COLON
-      y el typeDenoter por un expression
+      Se agregó nueva alternativa para declarar variables
       Autor: Brayan Marín Quirós
       */
     case Token.VAR:
       {
         acceptIt();
         Identifier iAST = parseIdentifier();
-        accept(Token.BECOMES);
-        Expression tAST = parseExpression();
-        finish(declarationPos);
-        declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
+        
+        switch(currentToken.kind){
+            case Token.COLON:
+            {
+             acceptIt();
+             TypeDenoter tAST = parseTypeDenoter();
+             finish(declarationPos);
+             declarationAST = new VarDeclaration(iAST, tAST, declarationPos);
+            } break;
+            case Token.BECOMES:
+            {
+             acceptIt();
+             Expression eAST = parseExpression();
+             finish(declarationPos);
+             declarationAST = new VarDeclarationOptional(iAST, eAST, declarationPos);
+            } break;
+            
+            default:
+              syntacticError("\"%\" ';' or ':=' expected here",
+                      currentToken.spelling);
+            break;
+        }
       }
       break;
       
@@ -1538,14 +1555,34 @@ Nueva función agregada: parseCaseLiteral()
      //Autor: Brayan Marín Quirós
     case Token.ARRAY:
       {
+          
         acceptIt();
         IntegerLiteral ilAST = parseIntegerLiteral();
-        accept(Token.DOUBLEDOT);
-        IntegerLiteral il2AST = parseIntegerLiteral();
-        accept(Token.OF);
-        TypeDenoter tAST = parseTypeDenoter();
-        finish(typePos);
-        typeAST = new ArrayTypeDenoter(ilAST, il2AST, tAST, typePos);
+          
+        switch(currentToken.kind){
+            
+            case Token.OF:
+            {
+              acceptIt();
+              TypeDenoter tAST = parseTypeDenoter();
+              finish(typePos);
+              typeAST = new ArrayTypeDenoter(ilAST, tAST, typePos);
+            }
+            case Token.DOUBLEDOT:{
+                
+              acceptIt();
+              IntegerLiteral il2AST = parseIntegerLiteral();
+              accept(Token.OF);
+              TypeDenoter tAST = parseTypeDenoter();
+              finish(typePos);
+              typeAST = new ArrayTypeDenoterOptional(ilAST, il2AST, tAST, typePos);
+            }
+            default:
+              syntacticError("\"%\" of or '..' expected here",
+                      currentToken.spelling);
+            break;
+        }
+
       }
       break;
 
