@@ -795,6 +795,7 @@ Creada por Brayan Marín Quirós
         switch(currentToken.kind){
           case Token.DOUBLEDOT:
              //Si el when tiene (".." Case-Literal)
+             acceptIt();
              c2AST = parseCaseLiteral();
              break;
           default:
