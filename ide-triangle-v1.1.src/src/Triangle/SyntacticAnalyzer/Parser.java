@@ -694,8 +694,7 @@ public class Parser {
     case Token.END:
     case Token.ELSE:
     case Token.IN:
-
-
+        
     default:
       syntacticError("\"%\" cannot start a command",
         currentToken.spelling);

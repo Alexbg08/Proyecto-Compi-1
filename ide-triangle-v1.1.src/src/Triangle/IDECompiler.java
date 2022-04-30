@@ -13,6 +13,7 @@ import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.SyntacticAnalyzer.Parser;
 import Triangle.ContextualAnalyzer.Checker;
 import Triangle.CodeGenerator.Encoder;
+import Triangle.SyntacticAnalyzer.WrittenHTML;
 import Triangle.TreeWriterXML.Writer;
 
 
@@ -52,7 +53,15 @@ public class IDECompiler {
         Parser parser = new Parser(scanner, report);
         boolean success = false;
         
+        
+        // Para escribir el archivo HTML 
+        SourceFile sourceHTML = new SourceFile(sourceName);
+        Scanner scannerHTML = new Scanner(sourceHTML);
+        WrittenHTML htmlReading = new WrittenHTML(sourceName.replace(".tri", ".html"), scannerHTML);
         rootAST = parser.parseProgram();
+        // Se escribe el código fuente en un archivo HTML 
+
+        htmlReading.write();
         if (report.numErrors == 0) {
             //System.out.println("Contextual Analysis ...");
             //Checker checker = new Checker(report);
