@@ -185,47 +185,102 @@ public final class Checker implements Visitor {
    // Todos lo métodos del extend del triángulo los agrego José Ramírez  
    @Override
     public Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        ast.C1.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitSingleRepeatUntilCommand(SingleRepeatUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        ast.C1.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitMultipleRepeatUntilCommand(MultipleRepeatUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitSingleDoWhileCommand(SingleDoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        ast.C1.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitMultipleDoWhileCommand(MultipleDoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitSingleDoUntilCommand(SingleDoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        ast.C1.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitMultipleDoUntilCommand(MultipleDoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitSingleForDoCommand(SingleForDoCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       Declaration id = (Declaration) ast.I.visit(this, null);
+        if (id == null)
+            reportUndeclared(ast.I);
+        else if (id instanceof ProcDeclaration) {
+            //ast.APS.visit(this, ((ProcDeclaration) id).FPS);
+        } else if (id instanceof ProcFormalParameter) {
+            //ast.APS.visit(this, ((ProcFormalParameter) id).FPS);
+        } else
+            reporter.reportError("\"%\" is not a procedure identifier",
+                           ast.I.spelling, ast.I.position);
+        
+         TypeDenoter e1Type = (TypeDenoter) ast.E1.visit(this, null);
+         TypeDenoter e2Type = (TypeDenoter) ast.E2.visit(this, null);
+         if (! e1Type.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E1.position);
+         if (! e1Type.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E1.position);
+         
+         ast.C1.visit(this, null);
+         return null; 
     }
 
     @Override
@@ -313,11 +368,6 @@ public final class Checker implements Visitor {
     public Object visitArrayTypeDenoterOptional(ArrayTypeDenoterOptional ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
-
-    
-  
 
   // Expressions
 
