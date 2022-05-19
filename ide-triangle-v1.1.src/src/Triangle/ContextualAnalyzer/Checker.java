@@ -242,7 +242,7 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitSingleDoUntilCommand(SingleDoUntilCommand ast, Object o) {
-          TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if (! eType.equals(StdEnvironment.booleanType))
             reporter.reportError("Boolean expression expected here", "", ast.E.position);
         ast.C1.visit(this, null);
@@ -306,48 +306,71 @@ public final class Checker implements Visitor {
     public Object visitMultipleForUntilCommand(MultipleForUntilCommand ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
     @Override
     public Object visitCondRestOfIfCommand(CondRestOfIfCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        return null;
+      
     }
 
     @Override
     public Object visitEndRestOfIFCommand(EndRestOfIFCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.C1.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitCasesCommand(CasesCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.C1.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitSingleCaseCommand(SingleCaseCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitMultipleCaseCommand(MultipleCaseCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        ast.C3.visit(this, null);
+        return null;
     }
 
     @Override
     public Object visitCaseIntLiteralCommand(CaseIntLiteralCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       TypeDenoter eType = (TypeDenoter) ast.IN.visit(this, null);
+        if (! eType.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.IN.position);
+        return null;
     }
 
     @Override
     public Object visitCaseCharLiteralCommand(CaseCharLiteralCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         TypeDenoter eType = (TypeDenoter) ast.CH.visit(this, null);
+        if (! eType.equals(StdEnvironment.charType))
+            reporter.reportError("Char expression expected here", "", ast.CH.position);
+        return null;
     }
+    
         @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         ast.D1.visit(this, null);
+         ast.D2.visit(this, null);
+         return null;
     }
 
     @Override
