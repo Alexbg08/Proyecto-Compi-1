@@ -44,7 +44,6 @@ import Triangle.AbstractSyntaxTrees.EmptyExpression;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.EndRestOfIFCommand;
 import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
-import Triangle.AbstractSyntaxTrees.Expression;
 import Triangle.AbstractSyntaxTrees.FieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.ForVarDeclaration;
 import Triangle.AbstractSyntaxTrees.FormalParameter;
@@ -261,17 +260,8 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitSingleForDoCommand(SingleForDoCommand ast, Object o) {
-       Declaration id = (Declaration) ast.I.visit(this, null);
-        if (id == null)
-            reportUndeclared(ast.I);
-        else if (id instanceof ProcDeclaration) {
-            //ast.APS.visit(this, ((ProcDeclaration) id).FPS);
-        } else if (id instanceof ProcFormalParameter) {
-            //ast.APS.visit(this, ((ProcFormalParameter) id).FPS);
-        } else
-            reporter.reportError("\"%\" is not a procedure identifier",
-                           ast.I.spelling, ast.I.position);
-        
+       // idTable.openScope();
+   
          TypeDenoter e1Type = (TypeDenoter) ast.E1.visit(this, null);
          TypeDenoter e2Type = (TypeDenoter) ast.E2.visit(this, null);
          if (! e1Type.equals(StdEnvironment.integerType))
@@ -357,11 +347,22 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitForVarDeclaration(ForVarDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        idTable.enter(ast.I.spelling, ast);
+        if (ast.duplicated)
+            reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
+        return null;
     }
+    
         @Override
     public Object visitVarDeclarationOptional(VarDeclarationOptional ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        idTable.enter(ast.I.spelling, ast);
+        if (ast.duplicated)
+            reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
+    return null;
     }
 
     @Override
@@ -923,12 +924,18 @@ public final class Checker implements Visitor {
       } else if (binding instanceof VarDeclaration) {
         ast.type = ((TypeDeclaration) binding).T;
         ast.variable = true;
+       } else if (binding instanceof VarDeclarationOptional) {
+        ast.type = ((TypeDeclaration) binding).T;
+        ast.variable = true;
       } else if (binding instanceof ConstFormalParameter) {
         ast.type = ((ConstFormalParameter) binding).T;
         ast.variable = false;
       } else if (binding instanceof VarFormalParameter) {
         ast.type = ((VarFormalParameter) binding).T;
         ast.variable = true;
+        } else if (binding instanceof ForVarDeclaration) {
+        ast.type = ((VarFormalParameter) binding).T;
+        ast.variable = false;
       } else
         reporter.reportError ("\"%\" is not a const or var identifier",
                               ast.I.spelling, ast.I.position);
