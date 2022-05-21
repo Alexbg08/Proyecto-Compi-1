@@ -180,8 +180,8 @@ public final class Checker implements Visitor {
     ast.C.visit(this, null);
     return null;
   }
-   // extend del lenguje tri·ngulo 
-   // Todos lo mÈtodos del extend del tri·ngulo los agrego JosÈ RamÌrez  
+   // extend del lenguje tri√°ngulo 
+   // Todos lo m√©todos del extend del tri√°ngulo los agrego Jos√© Ram√≠rez  
    @Override
     public Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object o) {
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
@@ -1259,6 +1259,79 @@ public final class Checker implements Visitor {
 
   }
 
+/*
+  --------------------------------------------------------------
+  
+                        RECURSIVIDAD
+  
+  --------------------------------------------------------------
+  */
+
+  /* Funciones especiales para la recursividad*/
+
+  // Ejecuta la primera pasada sobre una funci√≥n recursiva
+  public Object visitRecursiveFuncDeclaration1(FuncDeclaration ast, Object o) {
+    ast.T = (TypeDenoter) ast.T.visit(this, null);
+    idTable.enter (ast.I.spelling, ast); // permite la recursividad
+    if (ast.duplicated)
+      reporter.reportError ("identifier \"%\" already declared", ast.I.spelling, ast.position);
+    idTable.openScope();
+    // Manda el string para evitar el mensaje de error la primera pasada
+    ast.FPS.visit(this, "No error message"); 
+    idTable.closeScope();
+    return null;
+  }
+  
+  // Ejecuta la segunda pasada sobre una funci√≥n recursiva
+  public Object visitRecursiveFuncDeclaration2(FuncDeclaration ast, Object o) {
+    idTable.openScope();
+    ast.FPS.visit(this, null);
+    TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null); 
+    idTable.closeScope();
+    if (! ast.T.equals(eType))
+    reporter.reportError ("body of function \"%\" has wrong type", ast.I.spelling, ast.E.position);
+    return null;
+  }
+
+  // Ejecuta la primera pasada sobre un procedimiento recursivo
+  public Object visitRecursiveProcDeclaration1(ProcDeclaration ast, Object o) {
+    idTable.enter (ast.I.spelling, ast); // permite la recursividad
+    if (ast.duplicated)
+      reporter.reportError ("identifier \"%\" already declared", ast.I.spelling, ast.position);
+    idTable.openScope();
+    // Manda el string para evitar el mensaje de error la primera pasada
+    ast.FPS.visit(this, "No error message");  
+    idTable.closeScope();
+    return null;
+  }
+
+  // Ejecuta la segunda pasada sobre un procedimiento recursivo
+  public Object visitRecursiveProcDeclaration2(ProcDeclaration ast, Object o) {
+    idTable.openScope();
+    ast.FPS.visit(this, null);
+    ast.C.visit(this, null);
+    idTable.closeScope();
+    return null;
+  }
+
+
+  // Determina si hay que hacer la primera pasadad sobre una funcion o un procedimiento
+  public void determineProcFuncForFirstPass(Declaration ast, Object o) {
+    if (ast.getClass() == FuncDeclaration.class) {
+      visitRecursiveFuncDeclaration1((FuncDeclaration) ast, o);
+    } else if (ast.getClass() == ProcDeclaration.class){
+      visitRecursiveProcDeclaration1((ProcDeclaration) ast, o);
+    }
+  }
+
+  // Determina si hay que hacer la segunda pasada sobre una funcion o un procedimiento
+  public void determineProcFunForSecondPass(Declaration ast, Object o) {
+    if (ast.getClass() == FuncDeclaration.class) {
+      visitRecursiveFuncDeclaration2((FuncDeclaration) ast, o);
+    } else if (ast.getClass() == ProcDeclaration.class){
+      visitRecursiveProcDeclaration2((ProcDeclaration) ast, o);
+    }
+  }
 
 
     
