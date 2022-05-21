@@ -181,11 +181,11 @@ public class TreeVisitor implements Visitor {
   }
   
   public Object visitMultipleForDoCommand(MultipleForDoCommand   ast, Object obj) { 
-      return(createQuinary("Multiple For Do Command",ast.I, ast.E1,ast.E2, ast.C1,ast.C2));
+      return (createQuaternary("Multiple For Do Command",ast.D,ast.E2, ast.C1,ast.C2));
   }
   
   public Object visitSingleForDoCommand(SingleForDoCommand    ast, Object obj) { 
-      return(createQuaternary("Single For Do Command",ast.I, ast.E1,ast.E2, ast.C1));
+      return(createTernary("Single For Do Command",ast.D,ast.E2, ast.C1));
   }
   
   public Object visitMultipleForWhileCommand(MultipleForWhileCommand   ast, Object obj) { 

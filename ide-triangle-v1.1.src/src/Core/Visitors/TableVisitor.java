@@ -223,8 +223,7 @@ public class TableVisitor implements Visitor {
   }
   
   public Object visitMultipleForDoCommand   (MultipleForDoCommand   ast, Object o) { 
-      ast.I.visit(this, null);
-      ast.E1.visit(this, null);
+      ast.D.visit(this, null);
       ast.E2.visit(this, null);
       ast.C1.visit(this, null);
       ast.C2.visit(this, null);
@@ -232,8 +231,7 @@ public class TableVisitor implements Visitor {
   }
   
   public Object visitSingleForDoCommand  (SingleForDoCommand    ast, Object o) { 
-      ast.I.visit(this, null);
-      ast.E1.visit(this, null);
+      ast.D.visit(this, null);
       ast.E2.visit(this, null);
       ast.C1.visit(this, null);
       return(null);

@@ -8,11 +8,10 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 public class MultipleForDoCommand extends Command {
 
  
-   public MultipleForDoCommand (Identifier iAST,Expression e1AST, Expression e2AST, Command c1AST, Command c2AST,
+   public MultipleForDoCommand (Declaration dAST, Expression e2AST, Command c1AST, Command c2AST,
                     SourcePosition thePosition) {
     super (thePosition);
-    I = iAST;
-    E1 = e1AST;
+    D = dAST;
     E2 = e2AST;
     C1 = c1AST;
     C2 = c2AST;
@@ -25,7 +24,7 @@ public class MultipleForDoCommand extends Command {
     
   }
 
-  public Identifier I;
-  public Expression E1, E2;
+  public Declaration D;
+  public Expression E2;
   public Command C1,C2;
 }

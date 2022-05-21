@@ -107,6 +107,7 @@ import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
+import javax.swing.text.LayoutQueue;
 
 public class LayoutVisitor implements Visitor {
 
@@ -185,11 +186,11 @@ public class LayoutVisitor implements Visitor {
   }
   
   public Object visitMultipleForDoCommand(MultipleForDoCommand   ast, Object obj) { 
-      return(layoutQuinary("Mulp.ForDoCom.",ast.I, ast.E1,ast.E2, ast.C1,ast.C2));
+      return(layoutQuaternary("Mulp.ForDoCom.", ast.D,ast.E2, ast.C1,ast.C2));
   }
   
   public Object visitSingleForDoCommand(SingleForDoCommand    ast, Object obj) { 
-      return(layoutQuaternary("Sing.ForDoCom.",ast.I, ast.E1,ast.E2, ast.C1));
+      return(layoutTernary("Sing.ForDoCom.",ast.D,ast.E2, ast.C1));
   }
   
   public Object visitMultipleForWhileCommand (MultipleForWhileCommand    ast, Object obj) { 

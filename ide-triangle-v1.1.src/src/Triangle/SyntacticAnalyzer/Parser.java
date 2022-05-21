@@ -558,9 +558,11 @@ public class Parser {
                 finish(commandPos);
 
                 if(c2AST == null){
-                    commandAST = new SingleForDoCommand(iAST, eAST, e2AST, cAST, commandPos);               
+                    Declaration dAST = new ForVarDeclaration(iAST,eAST, commandPos);
+                    commandAST = new SingleForDoCommand(dAST, e2AST, cAST, commandPos);               
                 }else{
-                    commandAST = new MultipleForDoCommand(iAST, eAST, e2AST, cAST, c2AST, commandPos);
+                    Declaration dAST = new ForVarDeclaration(iAST,eAST, commandPos);
+                    commandAST = new MultipleForDoCommand(dAST, e2AST, cAST, c2AST, commandPos);
                 }
             }
             break;

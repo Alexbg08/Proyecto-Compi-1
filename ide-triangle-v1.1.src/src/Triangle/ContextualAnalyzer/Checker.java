@@ -260,41 +260,93 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitSingleForDoCommand(SingleForDoCommand ast, Object o) {
-       // idTable.openScope();
-   
-         TypeDenoter e1Type = (TypeDenoter) ast.E1.visit(this, null);
          TypeDenoter e2Type = (TypeDenoter) ast.E2.visit(this, null);
-         if (! e1Type.equals(StdEnvironment.integerType))
-            reporter.reportError("Integer expression expected here", "", ast.E1.position);
-         if (! e1Type.equals(StdEnvironment.integerType))
-            reporter.reportError("Integer expression expected here", "", ast.E1.position);
+         if (! e2Type.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E2.position);
          
+         idTable.openScope();
          ast.C1.visit(this, null);
+         idTable.closeScope();
          return null; 
     }
 
     @Override
     public Object visitMultipleForDoCommand(MultipleForDoCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         TypeDenoter e2Type = (TypeDenoter) ast.E2.visit(this, null);
+         if (! e2Type.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E2.position);
+         
+         idTable.openScope();
+         ast.C1.visit(this, null);
+         ast.C2.visit(this, null);
+         idTable.closeScope();
+         
+         return null; 
     }
     @Override
     public Object visitSingleForWhileCommand(SingleForWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         TypeDenoter e2Type = (TypeDenoter) ast.E1.visit(this, null);
+         if (! e2Type.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E1.position);
+         
+         TypeDenoter e3Type = (TypeDenoter) ast.E2.visit(this, null);
+         if (! e2Type.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E2.position);
+         
+         idTable.openScope();
+         ast.C1.visit(this, null);
+         idTable.closeScope();
+         return null; 
     }
 
     @Override
     public Object visitMultipleForWhileCommand(MultipleForWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       TypeDenoter e2Type = (TypeDenoter) ast.E1.visit(this, null);
+         if (! e2Type.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E1.position);
+         
+         TypeDenoter e3Type = (TypeDenoter) ast.E2.visit(this, null);
+         if (! e2Type.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E2.position);
+         
+         idTable.openScope();
+         ast.C1.visit(this, null);
+         ast.C2.visit(this, null);
+         idTable.closeScope();
+         return null; 
     }
 
     @Override
     public Object visitSingleForUntilCommand(SingleForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter e2Type = (TypeDenoter) ast.E1.visit(this, null);
+         if (! e2Type.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E1.position);
+         
+         TypeDenoter e3Type = (TypeDenoter) ast.E2.visit(this, null);
+         if (! e2Type.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E2.position);
+         
+         idTable.openScope();
+         ast.C1.visit(this, null);
+         idTable.closeScope();
+         return null; 
     }
 
     @Override
     public Object visitMultipleForUntilCommand(MultipleForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter e2Type = (TypeDenoter) ast.E1.visit(this, null);
+         if (! e2Type.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E1.position);
+         
+         TypeDenoter e3Type = (TypeDenoter) ast.E2.visit(this, null);
+         if (! e2Type.equals(StdEnvironment.booleanType))
+            reporter.reportError("Boolean expression expected here", "", ast.E2.position);
+         
+         idTable.openScope();
+         ast.C1.visit(this, null);
+         ast.C2.visit(this, null);
+         idTable.closeScope();
+         return null; 
     }
     
     @Override
@@ -302,8 +354,10 @@ public final class Checker implements Visitor {
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if (! eType.equals(StdEnvironment.booleanType))
             reporter.reportError("Boolean expression expected here", "", ast.E.position);
+        
         ast.C1.visit(this, null);
         ast.C2.visit(this, null);
+   
         return null;
       
     }
@@ -316,38 +370,46 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitCasesCommand(CasesCommand ast, Object o) {
+        idTable.openScope();
         ast.C1.visit(this, null);
+        idTable.closeScope();
         return null;
     }
 
     @Override
     public Object visitSingleCaseCommand(SingleCaseCommand ast, Object o) {
+        idTable.openScope();
         ast.C1.visit(this, null);
         ast.C2.visit(this, null);
+        idTable.closeScope();
         return null;
     }
 
     @Override
     public Object visitMultipleCaseCommand(MultipleCaseCommand ast, Object o) {
+        idTable.openScope();
         ast.C1.visit(this, null);
         ast.C2.visit(this, null);
         ast.C3.visit(this, null);
+        idTable.closeScope();
         return null;
     }
 
     @Override
     public Object visitCaseIntLiteralCommand(CaseIntLiteralCommand ast, Object o) {
-       TypeDenoter eType = (TypeDenoter) ast.IN.visit(this, null);
+        TypeDenoter eType = (TypeDenoter) ast.IN.visit(this, null);
         if (! eType.equals(StdEnvironment.integerType))
             reporter.reportError("Integer expression expected here", "", ast.IN.position);
+        
         return null;
     }
 
     @Override
     public Object visitCaseCharLiteralCommand(CaseCharLiteralCommand ast, Object o) {
-         TypeDenoter eType = (TypeDenoter) ast.CH.visit(this, null);
+        TypeDenoter eType = (TypeDenoter) ast.CH.visit(this, null);
         if (! eType.equals(StdEnvironment.charType))
             reporter.reportError("Char expression expected here", "", ast.CH.position);
+        
         return null;
     }
     
@@ -358,23 +420,36 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
+         idTable.openScope();
          ast.D1.visit(this, null);
          ast.D2.visit(this, null);
+         idTable.closeScope();
          return null;
     }
 
     @Override
     public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         idTable.openScope();
+         ast.D1.visit(this, null);
+         ast.D2.visit(this, null);
+         idTable.closeScope();
+         return null;
     }
 
     @Override
     public Object visitForVarDeclaration(ForVarDeclaration ast, Object o) {
-         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        if (! eType.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E.position);
+        
+        idTable.openScope();
         idTable.enter(ast.I.spelling, ast);
+        idTable.closeScope();
+        
         if (ast.duplicated)
             reporter.reportError ("identifier \"%\" already declared",
                             ast.I.spelling, ast.position);
+    
         return null;
     }
     

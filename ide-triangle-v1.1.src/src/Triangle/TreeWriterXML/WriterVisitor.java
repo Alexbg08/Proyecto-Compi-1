@@ -690,8 +690,7 @@ public class WriterVisitor implements Visitor {
     @Override
     public Object visitSingleForDoCommand(SingleForDoCommand ast, Object o) {
         writeLineHTML("<SingleForDoCommand>");
-        ast.I.visit(this, null);
-        ast.E1.visit(this, null);
+        ast.D.visit(this, null);
         ast.E2.visit(this, null);
         ast.C1.visit(this, null);
         writeLineHTML("</SingleForDoCommand>");
@@ -701,8 +700,7 @@ public class WriterVisitor implements Visitor {
     @Override
     public Object visitMultipleForDoCommand(MultipleForDoCommand ast, Object o) {
         writeLineHTML("<MultipleForDoCommand>");
-        ast.I.visit(this, null);
-        ast.E1.visit(this, null);
+        ast.D.visit(this, null);
         ast.E2.visit(this, null);
         ast.C1.visit(this, null);
         ast.C2.visit(this, null);
