@@ -261,18 +261,7 @@ public final class Checker implements Visitor {
     }
     @Override
     public Object visitForVarDeclaration(ForVarDeclaration ast, Object o) {
-        
-        /**
-        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
-        if (! eType.equals(StdEnvironment.integerType))
-            reporter.reportError("Integer expression expected here", "", ast.E.position);
-        
-        idTable.openScope();
-        idTable.enter(ast.I.spelling, ast);
-        if (ast.duplicated)
-            reporter.reportError ("identifier \"%\" already declared",
-                            ast.I.spelling, ast.position);
-        idTable.closeScope();**/
+  
         return null;
     }
     @Override
@@ -422,7 +411,6 @@ public final class Checker implements Visitor {
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if (! eType.equals(StdEnvironment.booleanType))
             reporter.reportError("Boolean expression expected here", "", ast.E.position);
-        
         ast.C1.visit(this, null);
         ast.C2.visit(this, null);
    
@@ -481,10 +469,7 @@ public final class Checker implements Visitor {
         return null;
     }
     
-        @Override
-    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-        return null;
-    }
+ 
 
     @Override
     public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
@@ -494,18 +479,17 @@ public final class Checker implements Visitor {
          idTable.closeScope();
          return null;
     }
-
+           @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        return null;
+    }
+    
     @Override
     public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) {
-         idTable.openScope();
-         ast.D1.visit(this, null);
-         ast.D2.visit(this, null);
-         idTable.closeScope();
          return null;
     }
 
    
-    
         @Override
     public Object visitVarDeclarationOptional(VarDeclarationOptional ast, Object o) {
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
@@ -521,6 +505,7 @@ public final class Checker implements Visitor {
         ast.T = (TypeDenoter) ast.T.visit(this, null);
         TypeDenoter il1Type = (TypeDenoter) ast.IL1.visit(this, null);
         TypeDenoter il2pe = (TypeDenoter) ast.IL2.visit(this, null);
+        
         if (! il1Type.equals(StdEnvironment.integerType))
             reporter.reportError("Integer expression expected here", "", ast.IL1.position);
         if (! il2pe.equals(StdEnvironment.integerType))
