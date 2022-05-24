@@ -483,6 +483,18 @@ public final class Checker implements Visitor {
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
         return null;
     }
+	
+    public Object visitRecursiveFuncDeclaration(FuncDeclaration ast, Object o) {
+    ast.T = (TypeDenoter) ast.T.visit(this, null);
+    idTable.enter (ast.I.spelling, ast); // permite la recursividad
+    if (ast.duplicated)
+      reporter.reportError ("identifier \"%\" already declared", ast.I.spelling, ast.position);
+    idTable.openScope();
+    // Manda el string para evitar el mensaje de error la primera pasada
+    ast.FPS.visit(this, "No error message"); 
+    idTable.closeScope();
+    return null;
+  }
     
     @Override
     public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) {
