@@ -1580,6 +1580,7 @@ Nueva función agregada: parseCaseLiteral()
               finish(typePos);
               typeAST = new ArrayTypeDenoter(ilAST, tAST, typePos);
             }
+            break;
             case Token.DOUBLEDOT:{
                 
               acceptIt();
@@ -1589,6 +1590,7 @@ Nueva función agregada: parseCaseLiteral()
               finish(typePos);
               typeAST = new ArrayTypeDenoterOptional(ilAST, il2AST, tAST, typePos);
             }
+            break;
             default:
               syntacticError("\"%\" of or '..' expected here",
                       currentToken.spelling);
