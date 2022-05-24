@@ -321,7 +321,7 @@ public final class Checker implements Visitor {
          idTable.enter(forVar.I.spelling, forVar);
          
          TypeDenoter e3Type = (TypeDenoter) ast.E2.visit(this, null);
-         if (! e2Type.equals(StdEnvironment.booleanType))
+         if (! e3Type.equals(StdEnvironment.booleanType))
             reporter.reportError("Boolean expression expected here", "", ast.E2.position);
          
          ast.C1.visit(this, null);
@@ -346,7 +346,7 @@ public final class Checker implements Visitor {
          idTable.enter(forVar.I.spelling, forVar);
          
          TypeDenoter e3Type = (TypeDenoter) ast.E2.visit(this, null);
-         if (! e2Type.equals(StdEnvironment.booleanType))
+         if (! e3Type.equals(StdEnvironment.booleanType))
             reporter.reportError("Boolean expression expected here", "", ast.E2.position);
          
          ast.C1.visit(this, null);
@@ -372,7 +372,7 @@ public final class Checker implements Visitor {
          idTable.enter(forVar.I.spelling, forVar);
          
          TypeDenoter e3Type = (TypeDenoter) ast.E2.visit(this, null);
-         if (! e2Type.equals(StdEnvironment.booleanType))
+         if (! e3Type.equals(StdEnvironment.booleanType))
             reporter.reportError("Boolean expression expected here", "", ast.E2.position);
          
          ast.C1.visit(this, null);
@@ -397,7 +397,7 @@ public final class Checker implements Visitor {
          idTable.enter(forVar.I.spelling, forVar);
          
          TypeDenoter e3Type = (TypeDenoter) ast.E2.visit(this, null);
-         if (! e2Type.equals(StdEnvironment.booleanType))
+         if (! e3Type.equals(StdEnvironment.booleanType))
             reporter.reportError("Boolean expression expected here", "", ast.E2.position);
          
          ast.C1.visit(this, null);
@@ -1069,7 +1069,7 @@ public final class Checker implements Visitor {
         ast.type = ((ConstDeclaration) binding).E.type;
         ast.variable = false;
       } else if (binding instanceof VarDeclaration) {
-        ast.type = ((TypeDeclaration) binding).T;
+        ast.type = ((VarDeclaration) binding).T;
         ast.variable = true;
        } else if (binding instanceof VarDeclarationOptional) {
         ast.type = ((VarDeclarationOptional) binding).E.type;
