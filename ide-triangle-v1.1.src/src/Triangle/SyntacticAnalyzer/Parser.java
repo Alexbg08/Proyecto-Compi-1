@@ -1272,13 +1272,10 @@ Nueva función agregada: parseCaseLiteral()
     Declaration pfAST = parseProcFunc();
 
       do {
-        if (currentToken.kind == Token.AND) {
-            acceptIt();
-            Declaration pf2AST = parseProcFunc();
-            finish(declarationPos);
-            procFuncsDeclarationAST = new ProcFuncsDeclaration(pfAST, pf2AST, declarationPos);
-            
-        }
+        acceptIt();
+        Declaration pf2AST = parseProcFunc();
+        finish(declarationPos);
+        procFuncsDeclarationAST = new ProcFuncsDeclaration(pfAST, pf2AST, declarationPos);
       } while (currentToken.kind == Token.AND);
     
     return procFuncsDeclarationAST;
