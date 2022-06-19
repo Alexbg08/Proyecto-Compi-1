@@ -174,7 +174,7 @@ public final class Encoder implements Visitor {
   public Object visitWhileCommand(WhileCommand ast, Object o) {
     Frame frame = (Frame) o;
     int jumpAddr, loopAddr;
-
+    
     jumpAddr = nextInstrAddr;
     emit(Machine.JUMPop, 0, Machine.CBr, 0);
     loopAddr = nextInstrAddr;
@@ -190,44 +190,130 @@ public final class Encoder implements Visitor {
   // Todos lo métodos del extend del triángulo los agrego José Ramírez 
   @Override
     public Object visitSingleRepeatWhileCommand(SingleRepeatWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+    
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        loopAddr = nextInstrAddr;
+        ast.C1.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        return null;  
     }
 
     @Override
     public Object visitMultipleRepeatWhileCommand(MultipleRepeatWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+    
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        loopAddr = nextInstrAddr;
+        ast.C1.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        
+        ast.C2.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        return null;  
     }
 
     @Override
     public Object visitSingleRepeatUntilCommand(SingleRepeatUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+    
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        loopAddr = nextInstrAddr;
+        ast.C1.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr);
+        return null;  
     }
 
     @Override
     public Object visitMultipleRepeatUntilCommand(MultipleRepeatUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+    
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        loopAddr = nextInstrAddr;
+        ast.C1.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr);
+        
+        ast.C2.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        return null;  
     }
 
     @Override
     public Object visitSingleDoWhileCommand(SingleDoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+        jumpAddr = nextInstrAddr;
+        loopAddr = nextInstrAddr;
+        ast.C1.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        return null;
     }
 
     @Override
     public Object visitMultipleDoWhileCommand(MultipleDoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+        jumpAddr = nextInstrAddr;
+        loopAddr = nextInstrAddr;
+        ast.C1.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        
+        ast.C2.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        return null;
     }
 
     @Override
     public Object visitSingleDoUntilCommand(SingleDoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+        jumpAddr = nextInstrAddr;
+        loopAddr = nextInstrAddr;
+        ast.C1.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr);
+        return null;
     }
 
     @Override
     public Object visitMultipleDoUntilCommand(MultipleDoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        int jumpAddr, loopAddr;
+        jumpAddr = nextInstrAddr;
+        loopAddr = nextInstrAddr;
+        ast.C1.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr);
+        
+        ast.C2.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        return null;
     }
 
+    
+    
     @Override
     public Object visitSingleForDoCommand(SingleForDoCommand ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
