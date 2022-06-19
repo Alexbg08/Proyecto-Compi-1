@@ -261,7 +261,6 @@ public final class Checker implements Visitor {
     }
     @Override
     public Object visitForVarDeclaration(ForVarDeclaration ast, Object o) {
-  
         return null;
     }
     @Override
@@ -471,37 +470,116 @@ public final class Checker implements Visitor {
     
  
 
-    @Override
+    @Override/** 
+   * Checker visitor for class "Triangle.AbstractSyntaxTrees.PrivateDeclaration".
+   * @author Jhonny Picado Vega, Jocxan Sandí, Fabio Calderón
+   */
+    
     public Object visitPrivateDeclaration(PrivateDeclaration ast, Object o) {
-         idTable.openScope();
-         ast.D1.visit(this, null);
-         ast.D2.visit(this, null);
-         idTable.closeScope();
+          //Save the pointer before Private
+        idTable.setLatests();
+        ast.D1.visit(this, null);
+        idTable.setLatests();           //Save the last D1 pointer
+        ast.D2.visit(this, null);
+        idTable.closePrivate();
          return null;
     }
            @Override
-    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-        return null;
+           
+     /** 
+   * Checker visitor for class "Triangle.AbstractSyntaxTrees.RecursiveDeclaration".
+   * @author Jhonny Picado Vega
+   */       
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {  
+    ast.D.visit(this, null);
+    return null;
     }
 	
-    public Object visitRecursiveFuncDeclaration(FuncDeclaration ast, Object o) {
-    ast.T = (TypeDenoter) ast.T.visit(this, null);
-    idTable.enter (ast.I.spelling, ast); // permite la recursividad
-    if (ast.duplicated)
-      reporter.reportError ("identifier \"%\" already declared", ast.I.spelling, ast.position);
-    idTable.openScope();
-    // Manda el string para evitar el mensaje de error la primera pasada
-    ast.FPS.visit(this, "No error message"); 
-    idTable.closeScope();
-    return null;
-  }
-    
+
     @Override
+    /**
+   * Checker visitor for class "Triangle.AbstractSyntaxTrees.ProcFuncsDeclaration".
+   * @author Esteban Fonseca Montoya
+   */
     public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) {
-         return null;
+        // Add all the identifiers in the Proc/Func declarations in the subtrees of the AST.
+    addProcFuncsDeclarationIds(ast, null);
+
+    // Perform contextual analysis in the subtrees of the AST.
+    checkRecursiveProcFuncs(ast, null);
+
+    return null;
+       
+    }
+    /**
+   * Traverse the ProcFuncsDeclaration AST to enter the identifiers of its Procedures/Functions in the idTable.
+   * This allows the Procedures and Functions to be mutually recursive
+   * (e.g. PF1 can call PF2 and vice-versa, regardless of declaration order).
+   * @author Esteban Fonseca Montoya, Jhonny Picado
+   */
+  private Object addProcFuncsDeclarationIds(Declaration ast, Object o) {
+
+    if (ast instanceof ProcFuncsDeclaration) {
+      addProcFuncsDeclarationIds(((ProcFuncsDeclaration) ast).D1, null);
+      addProcFuncsDeclarationIds(((ProcFuncsDeclaration) ast).D2, null);
+    }
+    if (ast instanceof FuncDeclaration) {
+      ((FuncDeclaration) ast).T = (TypeDenoter) ((FuncDeclaration) ast).T.visit(this, null);
+      idTable.enter(((FuncDeclaration) ast).I.spelling, ast);
+      if (ast.duplicated)
+        reporter.reportError("identifier \"%\" already declared",
+                ((FuncDeclaration) ast).I.spelling, ast.position);
+
+      //Visit the FPS to set the correct type, for each parameter
+      idTable.openScope();
+      ((FuncDeclaration) ast).FPS.visit(this, null);
+      idTable.closeScope();
+    }
+    if (ast instanceof ProcDeclaration) {
+      idTable.enter(((ProcDeclaration) ast).I.spelling, ast);
+      if (ast.duplicated)
+        reporter.reportError("identifier \"%\" already declared",
+                ((ProcDeclaration) ast).I.spelling, ast.position);
+
+      //Visit the FPS to set the correct type, for each parameter
+      idTable.openScope();
+      ((ProcDeclaration) ast).FPS.visit(this, null);
+      idTable.closeScope();
     }
 
-   
+    return null;
+  }
+
+  /**
+   * Perform contextual analysis of the ProcFuncsDeclaration AST and its subtrees.
+   * Traversal is done recursively.
+   * @author Esteban Fonseca Montoya, Jhonny Picado
+   */
+  private Object checkRecursiveProcFuncs(Declaration ast, Object o) {
+
+    if (ast instanceof ProcFuncsDeclaration) {
+      checkRecursiveProcFuncs(((ProcFuncsDeclaration) ast).D1, null);
+      checkRecursiveProcFuncs(((ProcFuncsDeclaration) ast).D2, null);
+    }
+    if (ast instanceof FuncDeclaration) {
+      idTable.openScope();
+      ((FuncDeclaration) ast).FPS.visit(this, null);
+      TypeDenoter eType = (TypeDenoter) ((FuncDeclaration) ast).E.visit(this, null);
+      idTable.closeScope();
+      if (! ((FuncDeclaration) ast).T.equals(eType))
+        reporter.reportError ("body of function \"%\" has wrong type",
+                ((FuncDeclaration) ast).I.spelling, ((FuncDeclaration) ast).E.position);
+    }
+    if (ast instanceof ProcDeclaration) {
+      idTable.openScope();
+      ((ProcDeclaration) ast).FPS.visit(this, null);
+      ((ProcDeclaration) ast).C.visit(this, null);
+      idTable.closeScope();
+    }
+
+    return null;
+  }
+ 
         @Override
     public Object visitVarDeclarationOptional(VarDeclarationOptional ast, Object o) {
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);

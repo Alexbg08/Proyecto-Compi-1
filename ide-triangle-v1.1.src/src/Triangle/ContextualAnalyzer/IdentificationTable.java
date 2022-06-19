@@ -15,15 +15,18 @@
 package Triangle.ContextualAnalyzer;
 
 import Triangle.AbstractSyntaxTrees.Declaration;
+import java.util.ArrayList;
 
 public final class IdentificationTable {
 
   private int level;
   private IdEntry latest;
+  private ArrayList<IdEntry> latests;
 
   public IdentificationTable () {
     level = 0;
     latest = null;
+    latests = new ArrayList<>();
   }
 
   // Opens a new level in the identification table, 1 higher than the
@@ -77,6 +80,7 @@ public final class IdentificationTable {
     entry = new IdEntry(id, attr, this.level, this.latest);
     this.latest = entry;
   }
+  
 
   // Finds an entry for the given identifier in the identification table,
   // if any. If there are several entries for that identifier, finds the
@@ -103,6 +107,31 @@ public final class IdentificationTable {
     }
 
     return attr;
+  }
+  public void setLatests(){
+    this.latests.add(this.latest);
+  }
+
+
+  /**
+   * Method to set the correct pointer to close Private Declarations
+   * Takes the first entry pointer D2 and sets its above to the Declaration before D1
+   * @author Jhonny Picado, Jocxan Sandí, Fabio Calderón
+   */
+  public void closePrivate(){
+
+    IdEntry latestD1 = this.latests.get(this.latests.size()-1);
+    this.latests.remove(latests.size()-1);
+
+    IdEntry latestBeforePrivate = this.latests.get(this.latests.size()-1);
+    this.latests.remove(latests.size()-1);
+
+    IdEntry firstEntryD2 = this.latest;
+    while(firstEntryD2.previous != latestD1){
+      firstEntryD2= firstEntryD2.previous;
+    }
+
+    firstEntryD2.previous = latestBeforePrivate;
   }
 
 }
