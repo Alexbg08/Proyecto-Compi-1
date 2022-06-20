@@ -316,7 +316,29 @@ public final class Encoder implements Visitor {
     
     @Override
     public Object visitSingleForDoCommand(SingleForDoCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        ForVarDeclaration forVar = (ForVarDeclaration) ast.D;
+        
+        int jumpAddr, loopAddr;
+        
+        int extraSize = ((Integer) ast.E2.visit(this, frame)).intValue();
+        forVar.E.visit(this, frame);
+        
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        loopAddr = nextInstrAddr;
+        
+        ast.C1.visit(this, frame);
+        
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.succDisplacement);
+        
+        patch(jumpAddr, nextInstrAddr);
+        
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+        
+        
+        
+        return null;
     }
 
     @Override
@@ -408,7 +430,7 @@ public final class Encoder implements Visitor {
     
     @Override
     public Object visitForVarDeclaration(ForVarDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
     
     @Override
