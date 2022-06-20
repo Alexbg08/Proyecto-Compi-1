@@ -215,15 +215,14 @@ public final class Encoder implements Visitor {
         patch(jumpAddr, nextInstrAddr);
         ast.E.visit(this, frame);
         emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
-        
         ast.C2.visit(this, frame);
-        patch(jumpAddr, nextInstrAddr);
+       
         return null;  
     }
 
     @Override
     public Object visitSingleRepeatUntilCommand(SingleRepeatUntilCommand ast, Object o) {
-       Frame frame = (Frame) o;
+      Frame frame = (Frame) o;
         int jumpAddr, loopAddr;
     
         jumpAddr = nextInstrAddr;
@@ -238,7 +237,7 @@ public final class Encoder implements Visitor {
 
     @Override
     public Object visitMultipleRepeatUntilCommand(MultipleRepeatUntilCommand ast, Object o) {
-       Frame frame = (Frame) o;
+      Frame frame = (Frame) o;
         int jumpAddr, loopAddr;
     
         jumpAddr = nextInstrAddr;
@@ -248,20 +247,16 @@ public final class Encoder implements Visitor {
         patch(jumpAddr, nextInstrAddr);
         ast.E.visit(this, frame);
         emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr);
-        
         ast.C2.visit(this, frame);
-        patch(jumpAddr, nextInstrAddr);
-        return null;  
+        return null;
     }
 
     @Override
     public Object visitSingleDoWhileCommand(SingleDoWhileCommand ast, Object o) {
         Frame frame = (Frame) o;
-        int jumpAddr, loopAddr;
-        jumpAddr = nextInstrAddr;
+        int loopAddr;
         loopAddr = nextInstrAddr;
         ast.C1.visit(this, frame);
-        patch(jumpAddr, nextInstrAddr);
         ast.E.visit(this, frame);
         emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
         return null;
@@ -270,27 +265,23 @@ public final class Encoder implements Visitor {
     @Override
     public Object visitMultipleDoWhileCommand(MultipleDoWhileCommand ast, Object o) {
         Frame frame = (Frame) o;
-        int jumpAddr, loopAddr;
-        jumpAddr = nextInstrAddr;
+        int loopAddr;
+       
         loopAddr = nextInstrAddr;
         ast.C1.visit(this, frame);
-        patch(jumpAddr, nextInstrAddr);
         ast.E.visit(this, frame);
         emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
-        
         ast.C2.visit(this, frame);
-        patch(jumpAddr, nextInstrAddr);
+       
         return null;
     }
 
     @Override
     public Object visitSingleDoUntilCommand(SingleDoUntilCommand ast, Object o) {
        Frame frame = (Frame) o;
-        int jumpAddr, loopAddr;
-        jumpAddr = nextInstrAddr;
+        int  loopAddr;
         loopAddr = nextInstrAddr;
         ast.C1.visit(this, frame);
-        patch(jumpAddr, nextInstrAddr);
         ast.E.visit(this, frame);
         emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr);
         return null;
@@ -299,16 +290,13 @@ public final class Encoder implements Visitor {
     @Override
     public Object visitMultipleDoUntilCommand(MultipleDoUntilCommand ast, Object o) {
         Frame frame = (Frame) o;
-        int jumpAddr, loopAddr;
-        jumpAddr = nextInstrAddr;
+        int  loopAddr; 
         loopAddr = nextInstrAddr;
         ast.C1.visit(this, frame);
-        patch(jumpAddr, nextInstrAddr);
         ast.E.visit(this, frame);
         emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, loopAddr);
-        
         ast.C2.visit(this, frame);
-        patch(jumpAddr, nextInstrAddr);
+       
         return null;
     }
 
@@ -437,13 +425,11 @@ public final class Encoder implements Visitor {
     public Object visitVarDeclarationOptional(VarDeclarationOptional ast, Object o) {
         Frame frame = (Frame) o;
         int extraSize = 0;
-
         extraSize = ((Integer) ast.E.visit(this, frame)).intValue();
         emit(Machine.PUSHop, 0, 0, extraSize);
-        ast.entity = new UnknownValue(extraSize, frame.level, frame.size);
+        ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
         writeTableDetails(ast);
         return new Integer(extraSize);
-        
     }
 
     @Override
