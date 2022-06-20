@@ -343,40 +343,48 @@ public final class Encoder implements Visitor {
     public Object visitMultipleForUntilCommand(MultipleForUntilCommand ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    @Override
-    public Object visitCondRestOfIfCommand(CondRestOfIfCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitEndRestOfIFCommand(EndRestOfIFCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
+ 
     @Override
     public Object visitCasesCommand(CasesCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitSingleCaseCommand(SingleCaseCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return null;
     }
 
     @Override
     public Object visitMultipleCaseCommand(MultipleCaseCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return null;
     }
 
     @Override
     public Object visitCaseIntLiteralCommand(CaseIntLiteralCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Object visitCaseCharLiteralCommand(CaseCharLiteralCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
+    
+       @Override
+    public Object visitCondRestOfIfCommand(CondRestOfIfCommand ast, Object o) {
+         Frame frame = (Frame) o;
+         ast.C1.visit(this,frame);
+         ast.C2.visit(this, frame);
+         return null;
+    }
+
+    @Override
+    public Object visitEndRestOfIFCommand(EndRestOfIFCommand ast, Object o) {
+         Frame frame = (Frame) o;
+         ast.C1.visit(this, frame);
+        return null;
+    }
+
         @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -405,12 +413,21 @@ public final class Encoder implements Visitor {
     
     @Override
     public Object visitVarDeclarationOptional(VarDeclarationOptional ast, Object o) {
-       return null;
+        Frame frame = (Frame) o;
+        int extraSize = 0;
+
+        extraSize = ((Integer) ast.E.visit(this, frame)).intValue();
+        emit(Machine.PUSHop, 0, 0, extraSize);
+        ast.entity = new UnknownValue(extraSize, frame.level, frame.size);
+        writeTableDetails(ast);
+        return new Integer(extraSize);
+        
     }
 
     @Override
     public Object visitArrayTypeDenoterOptional(ArrayTypeDenoterOptional ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      
+        return ast.T.visit(this, o);
     }
 
 
