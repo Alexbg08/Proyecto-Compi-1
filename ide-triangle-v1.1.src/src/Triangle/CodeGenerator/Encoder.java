@@ -309,22 +309,19 @@ public final class Encoder implements Visitor {
         
         int jumpAddr, loopAddr;
         
-        int extraSize = ((Integer) ast.E2.visit(this, frame)).intValue();
+        int valSize = ((Integer) ast.E2.visit(this, frame)).intValue();
         forVar.E.visit(this, frame);
-        
         jumpAddr = nextInstrAddr;
         emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        // iniciar ciclo
         loopAddr = nextInstrAddr;
-        
         ast.C1.visit(this, frame);
-        
-        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.succDisplacement);
-        
-        patch(jumpAddr, nextInstrAddr);
-        
-        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
-        
-        
+        emit(Machine.CALLop, Machine.STr, Machine.PTr, Machine.succDisplacement);
+        patch(jumpAddr, nextInstrAddr); // punto de llegada del primer jump 
+        emit(Machine.LOADIop, valSize, 0, 0);
+        emit(Machine.CALLop, Machine.STr, Machine.PTr, Machine.geDisplacement);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CTr, loopAddr);
+        emit(Machine.POPop, 0, 0, valSize);
         
         return null;
     }
@@ -382,17 +379,29 @@ public final class Encoder implements Visitor {
     
        @Override
     public Object visitCondRestOfIfCommand(CondRestOfIfCommand ast, Object o) {
-         Frame frame = (Frame) o;
-         ast.C1.visit(this,frame);
-         ast.C2.visit(this, frame);
-         return null;
+        Frame frame = (Frame) o;
+        int jumpifAddr, jumpAddr;
+
+        Integer valSize = (Integer) ast.E.visit(this, frame);
+        jumpifAddr = nextInstrAddr;
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, 0);
+        ast.C1.visit(this, frame);
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        patch(jumpifAddr, nextInstrAddr);
+        ast.C2.visit(this, frame);
+        patch(jumpAddr, nextInstrAddr);
+        return null;
+       
     }
 
     @Override
     public Object visitEndRestOfIFCommand(EndRestOfIFCommand ast, Object o) {
-         Frame frame = (Frame) o;
-         ast.C1.visit(this, frame);
+        Frame frame = (Frame) o;
+        ast.C1.visit(this, frame);
+       
         return null;
+     
     }
 
         @Override
