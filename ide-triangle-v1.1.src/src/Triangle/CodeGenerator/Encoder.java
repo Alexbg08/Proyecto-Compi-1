@@ -395,17 +395,112 @@ public final class Encoder implements Visitor {
 
     @Override
     public Object visitMultipleForWhileCommand(MultipleForWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        ForVarDeclaration forVar = (ForVarDeclaration) ast.D;
+        
+        int jumpAddr, jumpAddr2, loopAddr;
+        int valSize = ((Integer) ast.E1.visit(this, frame)).intValue();
+        forVar.E.visit(this, frame);
+        
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        // iniciar ciclo
+        loopAddr = nextInstrAddr;
+        
+        ast.E2.visit(this, frame);
+        jumpAddr2 = nextInstrAddr;
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, 0);
+        
+        ast.C1.visit(this, frame);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.succDisplacement);
+        patch(jumpAddr, nextInstrAddr); // punto de llegada del primer jump   
+        emit(Machine.LOADop, 2, Machine.STr, -2);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+        
+        //jumpAddr2 = nextInstrAddr;
+        //emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, 0);
+        //ast.E2.visit(this, frame);
+        
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        
+        patch(jumpAddr2, nextInstrAddr); 
+        ast.C2.visit(this, frame);
+        emit(Machine.POPop, 0, 0, 2);
+        
+        return null;
     }
 
     @Override
     public Object visitSingleForUntilCommand(SingleForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        ForVarDeclaration forVar = (ForVarDeclaration) ast.D;
+        
+        int jumpAddr, jumpAddr2, loopAddr;
+        int valSize = ((Integer) ast.E1.visit(this, frame)).intValue();
+        forVar.E.visit(this, frame);
+        
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        // iniciar ciclo
+        loopAddr = nextInstrAddr;
+        
+        ast.E2.visit(this, frame);
+        jumpAddr2 = nextInstrAddr;
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, 0);
+        
+        ast.C1.visit(this, frame);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.succDisplacement);
+        patch(jumpAddr, nextInstrAddr); // punto de llegada del primer jump   
+        emit(Machine.LOADop, 2, Machine.STr, -2);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+        
+        //jumpAddr2 = nextInstrAddr;
+        //emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, 0);
+        //ast.E2.visit(this, frame);
+        
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        
+        patch(jumpAddr2, nextInstrAddr); 
+        emit(Machine.POPop, 0, 0, 2);
+        
+        return null;
     }
 
     @Override
     public Object visitMultipleForUntilCommand(MultipleForUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        ForVarDeclaration forVar = (ForVarDeclaration) ast.D;
+        
+        int jumpAddr, jumpAddr2, loopAddr;
+        int valSize = ((Integer) ast.E1.visit(this, frame)).intValue();
+        forVar.E.visit(this, frame);
+        
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        // iniciar ciclo
+        loopAddr = nextInstrAddr;
+        
+        ast.E2.visit(this, frame);
+        jumpAddr2 = nextInstrAddr;
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, 0);
+        
+        ast.C1.visit(this, frame);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.succDisplacement);
+        patch(jumpAddr, nextInstrAddr); // punto de llegada del primer jump   
+        emit(Machine.LOADop, 2, Machine.STr, -2);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+        
+        //jumpAddr2 = nextInstrAddr;
+        //emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, 0);
+        //ast.E2.visit(this, frame);
+        
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        
+        patch(jumpAddr2, nextInstrAddr); 
+        ast.C2.visit(this, frame);
+        emit(Machine.POPop, 0, 0, 2);
+        
+        return null;
     }
     
  
@@ -463,7 +558,7 @@ public final class Encoder implements Visitor {
 
         @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return null;
     }
 
     @Override
@@ -479,7 +574,7 @@ public final class Encoder implements Visitor {
 
     @Override
     public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
     
     @Override
