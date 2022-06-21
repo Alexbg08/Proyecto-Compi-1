@@ -310,18 +310,25 @@ public final class Encoder implements Visitor {
         int jumpAddr, loopAddr;
         
         int valSize = ((Integer) ast.E2.visit(this, frame)).intValue();
+        
         forVar.E.visit(this, frame);
         jumpAddr = nextInstrAddr;
         emit(Machine.JUMPop, 0, Machine.CBr, 0);
+        
+        
         // iniciar ciclo
         loopAddr = nextInstrAddr;
         ast.C1.visit(this, frame);
-        emit(Machine.CALLop, Machine.STr, Machine.PTr, Machine.succDisplacement);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.succDisplacement);
         patch(jumpAddr, nextInstrAddr); // punto de llegada del primer jump 
-        emit(Machine.LOADIop, valSize, 0, 0);
-        emit(Machine.CALLop, Machine.STr, Machine.PTr, Machine.geDisplacement);
-        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CTr, loopAddr);
-        emit(Machine.POPop, 0, 0, valSize);
+        
+        
+        emit(Machine.LOADop, 2, Machine.STr, -2);
+        
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        
+        emit(Machine.POPop, 0, 0, 2);
         
         return null;
     }
@@ -437,6 +444,7 @@ public final class Encoder implements Visitor {
         extraSize = ((Integer) ast.E.visit(this, frame)).intValue();
         emit(Machine.PUSHop, 0, 0, extraSize);
         ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
+        emit(Machine.STOREop, extraSize, Machine.SBr, displayRegister(frame.level, ast.entity.size));
         writeTableDetails(ast);
         return new Integer(extraSize);
     }
